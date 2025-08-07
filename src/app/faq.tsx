@@ -1,15 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { Typography, Accordion, AccordionHeader, AccordionBody } from "@material-tailwind/react";
+import { motion, useInView } from "framer-motion";
 
 const FAQS = [
   {
     title: "1. What are your opening hours?",
     desc: "We are open daily from 7:00 AM to 10:00 PM. We also offer early bird specials from 7:00 AM to 9:00 AM for our morning customers.",
   },
-  
- 
   {
     title: "4. Do you have vegetarian and vegan options?",
     desc: "Yes, we have a wide variety of vegetarian and vegan options on our menu. Our kitchen team is happy to accommodate dietary restrictions and can modify many of our dishes to meet your needs.",
@@ -23,6 +22,10 @@ const FAQS = [
 export function Faq() {
   const [open, setOpen] = React.useState(0);
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
+
+  // Refs and inView for each FAQ
+  const refs = [useRef(null), useRef(null), useRef(null)];
+  const inViews = refs.map((ref) => useInView(ref, { once: true, margin: "-100px" }));
 
   return (
     <section id="faq" className="py-8 px-8 lg:py-20">
@@ -42,23 +45,30 @@ export function Faq() {
 
         <div className="mx-auto lg:max-w-screen-lg lg:px-20">
           {FAQS.map(({ title, desc }, key) => (
-            <Accordion
+            <motion.div
               key={key}
-              open={open === key + 1}
-              onClick={() => handleOpen(key + 1)}
+              ref={refs[key]}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inViews[key] ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: key * 0.15, type: "spring", stiffness: 80 }}
             >
-              <AccordionHeader className="text-left text-gray-900">
-                {title}
-              </AccordionHeader>
-              <AccordionBody>
-                <Typography
-                  color="blue-gray"
-                  className="font-normal text-gray-500"
-                >
-                  {desc}
-                </Typography>
-              </AccordionBody>
-            </Accordion>
+              <Accordion
+                open={open === key + 1}
+                onClick={() => handleOpen(key + 1)}
+              >
+                <AccordionHeader className="text-left text-gray-900">
+                  {title}
+                </AccordionHeader>
+                <AccordionBody>
+                  <Typography
+                    color="blue-gray"
+                    className="font-normal text-gray-500"
+                  >
+                    {desc}
+                  </Typography>
+                </AccordionBody>
+              </Accordion>
+            </motion.div>
           ))}
         </div>
       </div>

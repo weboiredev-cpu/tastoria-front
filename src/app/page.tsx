@@ -50,9 +50,33 @@ export default function Portfolio() {
       variants={pageVariants}
     >
       <Navbar />
-      <motion.div variants={sectionVariants}>
-        <Hero tableId={tableId} />
-      </motion.div>
+      <section
+        className="relative min-h-screen flex flex-col justify-center items-center bg-black"
+        style={{
+          backgroundImage: "url('/image/newCafe.jpg')", // Change to your hero image path
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/60" /> {/* Overlay for readability */}
+        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-32">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 text-center">
+            Open Daily 7AM - 10PM @ Parbhani
+          </h2>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 text-center">
+            Tastoria Cafe: Where Every Sip <br /> Tells a Story
+          </h1>
+          <p className="text-lg md:text-2xl text-white/90 mb-8 text-center max-w-2xl">
+            Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality in our cozy Tastoria Cafe.
+          </p>
+          <a
+            href="#menu-page"
+            className="inline-block px-8 py-3 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition"
+          >
+            VIEW MENU
+          </a>
+        </div>
+      </section>
       <motion.div 
         variants={sectionVariants}
         viewport={{ once: true }}
