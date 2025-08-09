@@ -15,7 +15,7 @@ import { useParams, useRouter } from "next/navigation";
 import toast, { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { io } from "socket.io-client";
-
+import Loading from "@/components/Loading";
 const VALID_TABLES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 // Cart Storage Utilities
@@ -103,6 +103,36 @@ export default function TableMenu() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const CLOUDINARY_BASE_URL = process.env.NEXT_PUBLIC_CLOUDINARY_BASE_URL || '';
+
+  // Material Tailwind component props
+  const materialProps = {
+    placeholder: "",
+    onResize: undefined,
+    onResizeCapture: undefined,
+    onPointerEnterCapture: undefined,
+    onPointerLeaveCapture: undefined,
+    onAnimationStart: undefined,
+    onDragStart: undefined,
+    onDragEnd: undefined,
+    onDrag: undefined
+  };
+
+  // Function to get proper image URL
+  const getImageUrl = (item: any) => {
+    // Check if item has imageUrl (from API)
+    if (item.imageUrl) {
+      return item.imageUrl;
+    }
+    
+    // Check if item has image field (fallback)
+    if (item.image) {
+      return `${CLOUDINARY_BASE_URL}${item.image}`;
+    }
+    
+    // Return a default placeholder image
+    return "https://images.unsplash.com/photo-1504674900240-9c69d0c2e5b7?w=500&h=300&fit=crop&crop=center";
+  };
 
   // Memoized filtered menu items with proper typing
   const filteredMenu = useMemo(() => {
@@ -224,19 +254,6 @@ export default function TableMenu() {
     [cart]
   );
 
-  // Material Tailwind component props
-  const materialProps = {
-    placeholder: "",
-    onResize: undefined,
-    onResizeCapture: undefined,
-    onPointerEnterCapture: undefined,
-    onPointerLeaveCapture: undefined,
-    onAnimationStart: undefined,
-    onDragStart: undefined,
-    onDragEnd: undefined,
-    onDrag: undefined
-  };
-
   // Custom click handler for chips since they don't support onClick directly
   const handleChipClick = (category: string) => {
     setSelectedCategory(category);
@@ -322,8 +339,11 @@ export default function TableMenu() {
                 <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
                   <div
                     onClick={() => handleChipClick('all')}
-                    className={`cursor-pointer px-4 py-2 rounded-full ${selectedCategory === 'all' ? 'bg-blue-500 text-white' : 'bg-blue-gray-50'
-                      }`}
+                    className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      selectedCategory === 'all' 
+                        ? 'bg-blue-500 text-white shadow-md' 
+                        : 'bg-blue-gray-50 text-gray-700 hover:bg-blue-gray-100'
+                    }`}
                   >
                     All
                   </div>
@@ -331,8 +351,11 @@ export default function TableMenu() {
                     <div
                       key={category}
                       onClick={() => handleChipClick(category)}
-                      className={`cursor-pointer px-4 py-2 rounded-full ${selectedCategory === category ? 'bg-blue-500 text-white' : 'bg-blue-gray-50'
-                        }`}
+                      className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        selectedCategory === category 
+                          ? 'bg-blue-500 text-white shadow-md' 
+                          : 'bg-blue-gray-50 text-gray-700 hover:bg-blue-gray-100'
+                      }`}
                     >
                       {category.replace(/_/g, " ")}
                     </div>
@@ -348,7 +371,7 @@ export default function TableMenu() {
                 animate={{ opacity: 1 }}
                 className="flex flex-col items-center justify-center py-24"
               >
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+                <Loading/>
                 <Typography variant="h6" color="gray" {...materialProps}>
                   Loading menu...
                 </Typography>
@@ -377,20 +400,25 @@ export default function TableMenu() {
                       </Typography>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {items.filter(item => !item.paused)
-                          .map((item, index) => (
-                            <motion.div
-                              key={item.name}
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: index * 0.1 }}
-                            >
-                              <MenuItemCard
-                                {...item}
-                                price={`₹${item.price}`}
-                                onAddToCart={(quantity) => handleAddToCart(item, quantity)}
-                              />
-                            </motion.div>
-                          ))}
+                          .map((item, index) => {
+                            const imageUrl = getImageUrl(item);
+                            
+                            return (
+                              <motion.div
+                                key={item.name}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.1 }}
+                              >
+                                <MenuItemCard
+                                  {...item}
+                                  price={`₹${item.price}`}
+                                  img={imageUrl}
+                                  onAddToCart={(quantity) => handleAddToCart(item, quantity)}
+                                />
+                              </motion.div>
+                            );
+                          })}
                       </div>
                     </motion.div>
                   ))}

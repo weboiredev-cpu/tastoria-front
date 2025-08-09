@@ -60,9 +60,10 @@ export default function Portfolio() {
       >
         <div className="absolute inset-0 bg-black/60" /> {/* Overlay for readability */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-32">
-          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 text-center">
+          {/*<h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 text-center">
             Open Daily 7AM - 10PM @ Parbhani
           </h2>
+          */}
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 text-center">
             Tastoria Cafe: Where Every Sip <br /> Tells a Story
           </h1>
@@ -70,7 +71,7 @@ export default function Portfolio() {
             Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality in our cozy Tastoria Cafe.
           </p>
           <a
-            href="#menu-page"
+            href="/menu-page"
             className="inline-block px-8 py-3 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition"
           >
             VIEW MENU

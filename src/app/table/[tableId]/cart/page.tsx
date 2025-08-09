@@ -252,9 +252,14 @@ export default function TableCart() {
                         <Typography variant="h6" color="blue-gray" className="font-medium" {...materialProps}>
                           {item.name}
                         </Typography>
-                        <Typography variant="small" color="gray" className="font-normal" {...materialProps}>
-                          ₹{item.price} × {item.quantity}
-                        </Typography>
+                        <div className="flex items-center gap-3">
+                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                              Qty: {item.quantity}
+                            </span>
+                            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
+                              ₹{item.price}
+                            </span>
+                          </div>
                       </div>
                       <div className="flex items-center gap-4">
                         <Typography variant="h6" color="blue-gray" className="font-bold" {...materialProps}>

@@ -173,7 +173,7 @@ export function Navbar() {
             
             <div className="flex items-center">
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Tastoria
+                Tastoria Cafe
               </span>
               <span className={`${isScrolled ? 'text-gray-700' : 'text-gray-200'} hidden xs:inline`}> Cafe</span>
             </div>

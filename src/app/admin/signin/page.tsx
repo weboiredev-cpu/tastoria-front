@@ -203,6 +203,7 @@ export default function AdminSignIn() {
                 )}
               </div>
               {/* Forgot Password */}
+              {/*
               <div className="text-right">
                 <button
                   type="button"
@@ -213,6 +214,7 @@ export default function AdminSignIn() {
                   Forgot your password?
                 </button>
               </div>
+              */}
               {/* Submit Button */}
               <button
                 type="submit"

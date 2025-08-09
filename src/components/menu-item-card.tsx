@@ -14,16 +14,17 @@ import { FiMinus, FiPlus, FiShoppingCart } from 'react-icons/fi'; // Install rea
 import toast from "react-hot-toast";
 
 interface MenuItemCardProps {
-  name: string;
-  description: string;
-  price: string;
-  img: string;
+  name?: string;
+  description?: string;
+  price?: string;
+  img?: string;
   onAddToCart: (quantity: number) => void;
 }
 
 export function MenuItemCard({ name, description, price, img, onAddToCart }: MenuItemCardProps) {
   const [quantity, setQuantity] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = () => {
     onAddToCart(quantity);
@@ -33,19 +34,24 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
     });
   };
 
+  // Default fallback image
+  const fallbackImage = "https://images.unsplash.com/photo-1504674900240-9c69d0c2e5b7?w=500&h=300&fit=crop&crop=center";
+  const imageUrl = img && !imageError ? img : fallbackImage;
+
   return (
-    <Card 
+    <Card
       className="border border-blue-gray-100 shadow-lg transform transition-all duration-300 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader floated={false} shadow={false} className="h-56 relative overflow-hidden">
         <Image
-          src={img}
-          alt={name}
+          src={imageUrl}
+          alt={name ?? "Food item"}
           width={500}
           height={500}
           className="h-full w-full object-cover transform transition-transform duration-300 hover:scale-110"
+          onError={() => setImageError(true)}
         />
         <div className={`absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-300 flex items-center justify-center ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
           <Typography variant="h6" color="white" className="text-shadow">
@@ -53,6 +59,7 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
           </Typography>
         </div>
       </CardHeader>
+
       <CardBody className="text-center p-6">
         <div className="flex justify-between items-center mb-3">
           <Typography variant="h5" color="blue-gray" className="font-semibold">

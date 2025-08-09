@@ -16,17 +16,18 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+
 import { FiEdit2, FiTrash2, FiPlus, FiUpload } from "react-icons/fi";
 import Image from "next/image";
 import toast from "react-hot-toast";
-
+import Loading from "@/components/Loading"
 interface MenuItem {
   _id: string;
   name: string;
   description: string;
   price: number;
   category: string;
-  img: string;
+  imageUrl: string;
   paused: boolean;
 }
 
@@ -113,7 +114,7 @@ export default function MenuManagement() {
     formData.append("description", description);
     formData.append("price", price.toString());
     formData.append("category", category);
-    formData.append("image", file);
+    if (file) formData.append('image', file);
 
     try {
       const response = await fetch("http://localhost:5000/api/menu/add", {
@@ -152,24 +153,16 @@ export default function MenuManagement() {
       }
 
       // Upload image first
-      const uploadResponse = await uploadImage(
-        selectedImage,
-        formData.name,
-        formData.description,
-        price,
-        formData.category
-      );
+     const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("price", price.toString());
+    formDataToSend.append("category", formData.category);
+    formDataToSend.append("image", selectedImage);
 
       const response = await fetch("http://localhost:5000/api/menu/add", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          price,
-          img: imageUrl,
-        }),
+        body: formDataToSend,
       });
 
       const data = await response.json();
@@ -284,15 +277,16 @@ export default function MenuManagement() {
       description: item.description,
       price: item.price.toString(),
       category: item.category,
-      img: item.img,
+      img: item.imageUrl,
     });
     setShowEditDialog(true);
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+     
+      <div className="h-screen flex items-center justify-center">
+      <Loading />
       </div>
     );
   }
@@ -364,7 +358,7 @@ export default function MenuManagement() {
           >
             <div className="relative group h-52">
               <Image
-                src={item.img}
+                src={item.imageUrl}
                 alt={item.name}
                 fill
                 className="object-cover group-hover:brightness-90 transition-all duration-200"

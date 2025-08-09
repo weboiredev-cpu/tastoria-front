@@ -2,7 +2,7 @@
 
 import { Navbar, Footer } from "@/components";
 import { MenuItemCard } from "@/components/menu-item-card";
-import { Typography, Button, Chip } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -22,6 +22,20 @@ export default function MenuPage() {
   const [menuData, setMenuData] = useState<{ [category: string]: any[] }>({});
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const CLOUDINARY_BASE_URL = process.env.NEXT_PUBLIC_CLOUDINARY_BASE_URL || '';
+
+  // Material Tailwind component props
+  const materialProps = {
+    placeholder: "",
+    onResize: undefined,
+    onResizeCapture: undefined,
+    onPointerEnterCapture: undefined,
+    onPointerLeaveCapture: undefined,
+    onAnimationStart: undefined,
+    onDragStart: undefined,
+    onDragEnd: undefined,
+    onDrag: undefined
+  };
 
   // Load cart from localStorage on initial render
   useEffect(() => {
@@ -37,7 +51,7 @@ export default function MenuPage() {
         setIsLoading(true);
         const res = await fetch("http://localhost:5000/api/menu/all");
         const data = await res.json();
-  
+
         if (data.success) {
           const grouped: { [key: string]: any[] } = {};
           data.items.forEach((item: any) => {
@@ -56,16 +70,16 @@ export default function MenuPage() {
         setIsLoading(false);
       }
     };
-  
+
     fetchMenu();
   }, []);
   useEffect(() => {
     const socket = io("http://localhost:5000");
-  
+
     socket.on("menuStatusChanged", ({ itemId, paused }) => {
       setMenuData((prevMenu) => {
         const updatedMenu = { ...prevMenu };
-  
+
         // Update only the affected item
         for (const category in updatedMenu) {
           updatedMenu[category] = updatedMenu[category].map((item) => {
@@ -75,15 +89,15 @@ export default function MenuPage() {
             return item;
           });
         }
-  
+
         return updatedMenu;
       });
     });
-  
+
     return () => {
       socket.disconnect();
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -94,22 +108,22 @@ export default function MenuPage() {
   }, [cart]);
 
   const handleAddToCart = (item: any, quantity: number) => {
-    const itemPrice = typeof item.price === 'string' 
+    const itemPrice = typeof item.price === 'string'
       ? parseFloat(item.price.replace(/[^\d.]/g, ''))
       : item.price;
 
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(cartItem => cartItem.name === item.name);
-      
+
       if (existingItemIndex > -1) {
         const updatedCart = [...prevCart];
         updatedCart[existingItemIndex].quantity += quantity;
         return updatedCart;
       } else {
-        return [...prevCart, { 
-          ...item, 
+        return [...prevCart, {
+          ...item,
           price: itemPrice,
-          quantity 
+          quantity
         }];
       }
     });
@@ -133,6 +147,22 @@ export default function MenuPage() {
     }
   };
 
+  // Function to get proper image URL
+  const getImageUrl = (item: any) => {
+    // Check if item has imageUrl (from API)
+    if (item.imageUrl) {
+      return item.imageUrl;
+    }
+    
+    // Check if item has image field (fallback)
+    if (item.image) {
+      return `${CLOUDINARY_BASE_URL}${item.image}`;
+    }
+    
+    // Return a default placeholder image
+    return "https://images.unsplash.com/photo-1504674900240-9c69d0c2e5b7?w=500&h=300&fit=crop&crop=center";
+  };
+
   return (
     <>
       <Navbar />
@@ -146,15 +176,15 @@ export default function MenuPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Typography variant="h1" color="blue-gray" className="text-4xl md:text-5xl font-bold mb-4">
+                <Typography variant="h1" color="blue-gray" className="text-4xl md:text-5xl font-bold mb-4" {...materialProps}>
                   Our Delicious Menu
                 </Typography>
-                <Typography variant="lead" className="text-gray-600 max-w-2xl mx-auto">
+                <Typography variant="lead" className="text-gray-600 max-w-2xl mx-auto" {...materialProps}>
                   Explore our wide variety of mouth-watering dishes, prepared with the finest ingredients and love
                 </Typography>
               </motion.div>
             </div>
-            
+
             {/* Cart Summary - Fixed Position */}
             <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t z-50 py-4 px-6">
               <div className="container mx-auto flex justify-between items-center">
@@ -165,19 +195,20 @@ export default function MenuPage() {
                     </svg>
                   </div>
                   <div>
-                    <Typography variant="small" className="font-medium text-gray-600">
+                    <Typography variant="small" className="font-medium text-gray-600" {...materialProps}>
                       {cart.length > 0 ? `${cart.reduce((sum, item) => sum + item.quantity, 0)} items` : 'Cart is empty'}
                     </Typography>
-                    <Typography variant="h6" color="blue-gray" className="font-bold">
+                    <Typography variant="h6" color="blue-gray" className="font-bold" {...materialProps}>
                       ₹{cartTotal}
                     </Typography>
                   </div>
                 </div>
                 <Link href="/cart">
-                  <Button 
-                    color="green" 
+                  <Button
+                    color="green"
                     size="lg"
                     className="flex items-center gap-2"
+                    {...materialProps}
                   >
                     <span>View Cart</span>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,18 +222,28 @@ export default function MenuPage() {
             {/* Category Navigation */}
             <div className="mb-12 overflow-x-auto">
               <div className="flex gap-4 pb-4">
-                <Chip
-                  value="All"
+                <div
                   onClick={() => setSelectedCategory('all')}
-                  className={`cursor-pointer ${selectedCategory === 'all' ? 'bg-blue-500 text-white' : 'bg-blue-gray-50'}`}
-                />
+                  className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    selectedCategory === 'all' 
+                      ? 'bg-blue-500 text-white shadow-md' 
+                      : 'bg-blue-gray-50 text-gray-700 hover:bg-blue-gray-100'
+                  }`}
+                >
+                  All
+                </div>
                 {Object.keys(menuData).map((category) => (
-                  <Chip
+                  <div
                     key={category}
-                    value={category.replace(/_/g, " ")}
                     onClick={() => setSelectedCategory(category)}
-                    className={`cursor-pointer ${selectedCategory === category ? 'bg-blue-500 text-white' : 'bg-blue-gray-50'}`}
-                  />
+                    className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      selectedCategory === category 
+                        ? 'bg-blue-500 text-white shadow-md' 
+                        : 'bg-blue-gray-50 text-gray-700 hover:bg-blue-gray-100'
+                    }`}
+                  >
+                    {category.replace(/_/g, " ")}
+                  </div>
                 ))}
               </div>
             </div>
@@ -227,24 +268,30 @@ export default function MenuPage() {
                       key={section}
                       variants={itemVariants}
                     >
-                      <Typography variant="h2" color="blue-gray" className="text-3xl font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize">
+                      <Typography variant="h2" color="blue-gray" className="text-3xl font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize" {...materialProps}>
                         {section.replace(/_/g, " ")}
                       </Typography>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {(items as any[]).filter(item => !item.paused).map((item, index) => (
-                          <motion.div
-                            key={index}
-                            variants={itemVariants}
-                            whileHover={{ scale: 1.02 }}
-                            transition={{ type: "spring", stiffness: 300 }}
-                          >
-                            <MenuItemCard
-                              {...item}
-                              price={`₹${item.price}`}
-                              onAddToCart={(quantity) => handleAddToCart(item, quantity)}
-                            />
-                          </motion.div>
-                        ))}
+                        {(items as any[]).filter(item => !item.paused).map((item, index) => {
+                          const imageUrl = getImageUrl(item);
+
+                          return (
+                            <motion.div
+                              key={index}
+                              variants={itemVariants}
+                              whileHover={{ scale: 1.02 }}
+                              transition={{ type: "spring", stiffness: 300 }}
+                            >
+                              <MenuItemCard
+                                name={item.name}
+                                description={item.description}
+                                price={`₹${item.price}`}
+                                img={imageUrl}
+                                onAddToCart={(quantity) => handleAddToCart(item, quantity)}
+                              />
+                            </motion.div>
+                          );
+                        })}
                       </div>
                     </motion.div>
                   ))}

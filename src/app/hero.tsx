@@ -82,9 +82,9 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Typography variant="h3" color="white" className="mb-2" {...materialProps}>
+            {/*<Typography variant="h3" color="white" className="mb-2" {...materialProps}>
               Open Daily 7AM - 10PM @ Parbhani
-            </Typography>
+            </Typography>*/}
           </motion.div>
           
           <motion.div
