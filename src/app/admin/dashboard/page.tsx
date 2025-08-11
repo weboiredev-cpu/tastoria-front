@@ -61,6 +61,7 @@ interface DashboardStats {
     name: string;
     orders: number;
     revenue: number;
+    image?: string;
   }>;
   recentOrders: Array<{
     id: string;
@@ -107,7 +108,31 @@ const defaultStats: DashboardStats = {
   recentOrders: [],
   dailyRevenue: []
 };
+interface Order {
+  _id: string;
+  tableId: string;
+  customerName?: string;
+  phoneNumber?: string;
+  userEmail?: string;
+  items: {
+    name: string;
+    quantity: number;
+    price: string;
+  }[];
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  source: 'website' | 'whatsapp';
+  total: number;
+  orderTime: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
+interface PopularItem {
+  _id: string; // item name
+  totalSold: number;
+  totalRevenue: number;
+  image?: string;
+}
 export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats>(defaultStats);
@@ -124,25 +149,38 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const [statsRes, recentOrdersRes] = await Promise.all([
+      const [statsRes, recentOrdersRes, popularItemsRes] = await Promise.all([
         fetch('http://localhost:5000/api/admin/stats'),
         fetch('http://localhost:5000/api/orders/recent'),
+        fetch('http://localhost:5000/api/orders/most-sold'),
       ]);
 
-      if (!statsRes.ok || !recentOrdersRes.ok) throw new Error('Failed to fetch data');
+      if (!statsRes.ok || !recentOrdersRes.ok || !popularItemsRes.ok) throw new Error('Failed to fetch data');
 
       const statsData = await statsRes.json();
       const recentData = await recentOrdersRes.json();
-
+      const popularItemsData = await popularItemsRes.json();
       // ✅ extract the actual array
       const recentOrders = Array.isArray(recentData.orders)
-  ? recentData.orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  : [];
+        ? recentData.orders.sort(
+          (a: Order, b: Order) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+        : [];
+      const popularItems = Array.isArray(popularItemsData)
+        ? popularItemsData
+          .sort(
+            (a: { totalSold: number }, b: { totalSold: number }) =>
+              b.totalSold - a.totalSold
+          )
+          .slice(0, 5)
+        : [];
 
       setStats(prev => ({
         ...prev,
         ...statsData,
         recentOrders,
+        popularItems,
       }));
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -154,7 +192,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchStats();
     const interval = setInterval(fetchStats, 5 * 60 * 1000);
-  
+
     // ✅ Listen for real-time new orders
     socket.on('new-order', (order) => {
       setStats(prev => {
@@ -166,13 +204,13 @@ export default function AdminDashboard() {
         };
       });
     });
-  
+
     return () => {
       clearInterval(interval);
       socket.off('new-order');
     };
   }, []);
-  
+
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
@@ -547,9 +585,9 @@ export default function AdminDashboard() {
             className="mt-4 sm:mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3"
             variants={itemVariants}
           >
-            
-           {/* Recent Orders */}
-           <Card className="lg:col-span-2 overflow-hidden bg-white shadow-xl border border-gray-100" {...materialProps}>
+
+            {/* Recent Orders */}
+            <Card className="lg:col-span-2 overflow-hidden bg-white shadow-xl border border-gray-100" {...materialProps}>
               <CardBody className="p-3 sm:p-4" {...materialProps}>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <Typography variant="h6" color="blue-gray" className="text-base sm:text-lg font-bold" {...materialProps}>
@@ -650,20 +688,21 @@ export default function AdminDashboard() {
                 </Typography>
                 <List {...materialProps}>
                   {stats.popularItems?.map((item, index) => (
-                    <ListItem key={index} className="mb-2 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-100" {...materialProps}>
-                      <div className="flex w-full justify-between items-center flex-wrap gap-2">
-                        <div>
-                          <Typography variant="small" color="blue-gray" className="font-bold" {...materialProps}>
-                            {item.name}
-                          </Typography>
-                          <Typography variant="small" color="gray" {...materialProps}>
-                            {item.orders} orders
-                          </Typography>
-                        </div>
-                        <Typography variant="small" color="blue" className="font-bold" {...materialProps}>
-                          ₹{item.revenue}
+                    <ListItem key={index} className="flex items-center gap-4 mb-2 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-100" {...materialProps}>
+                      {/* Show the image */}
+                      <Avatar src={item.image} alt={item.name} size="sm"  {...materialProps} />
+                      {/* Info */}
+                      <div className="flex-1">
+                        <Typography variant="small" color="blue-gray" className="font-bold" {...materialProps}>
+                          {item.name}
+                        </Typography>
+                        <Typography variant="small" color="gray" {...materialProps}>
+                          {item.orders} orders
                         </Typography>
                       </div>
+                      <Typography variant="small" color="blue" className="font-bold" {...materialProps}>
+                        ₹{item.revenue}
+                      </Typography>
                     </ListItem>
                   ))}
                 </List>

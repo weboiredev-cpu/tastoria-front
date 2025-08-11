@@ -4,7 +4,7 @@ import { Roboto } from "next/font/google";
 import { Layout } from "@/components";
 import AuthProvider from "./auth-provider";
 import { Toaster } from 'react-hot-toast';
-import { Navbar, Footer } from "@/components";
+import { Navbar } from "@/components";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -48,7 +48,7 @@ export default function RootLayout({
               <Toaster position="top-center" />
               {children}
             </main>
-            <Footer />
+          
           </Layout>
         </AuthProvider>
       </body>

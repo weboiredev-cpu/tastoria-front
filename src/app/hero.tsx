@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { motion } from "framer-motion";
-
+import Image from 'next/image';
 interface HeroProps {
   tableId?: string;
   onViewMenu?: () => void;
@@ -14,14 +14,14 @@ interface HeroProps {
 // Material Tailwind component props
 const materialProps = {
   placeholder: "",
-  onResize: () => {},
-  onResizeCapture: () => {},
-  onPointerEnterCapture: () => {},
-  onPointerLeaveCapture: () => {},
-  onAnimationStart: () => {},
-  onDragStart: () => {},
-  onDragEnd: () => {},
-  onDrag: () => {},
+  onResize: () => { },
+  onResizeCapture: () => { },
+  onPointerEnterCapture: () => { },
+  onPointerLeaveCapture: () => { },
+  onAnimationStart: () => { },
+  onDragStart: () => { },
+  onDragEnd: () => { },
+  onDrag: () => { },
 };
 
 function Hero({ tableId, onViewMenu }: HeroProps) {
@@ -51,27 +51,29 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
   return (
     <div className="relative min-h-screen w-full">
       <Toaster />
-      
+
       {/* Image Background */}
       <motion.div
-        initial={{ scale: 1.1, opacity: 0 }}
+        initial={{ scale: 1, opacity: 1 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 0.1 }}
         className="absolute inset-0"
       >
-        <img
+        <Image
           src="/image/newCafe.jpg"
           alt="Tastoria Cafe"
-          className="absolute inset-0 h-full w-full object-cover"
+          fill // makes image cover parent (like absolute inset-0)
+          style={{ objectFit: 'cover' }}
+          priority={false} // false means lazy load
         />
       </motion.div>
 
       {/* Overlay */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 h-full w-full bg-gray-900/50" 
+      <motion.div
+        initial={false}
+        animate={{ opacity: 0.5 }}
+        transition={{ duration: 0.1 }}
+        className="absolute inset-0 h-full w-full bg-gray-900/50"
       />
 
       {/* Content */}
@@ -86,7 +88,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
               Open Daily 7AM - 10PM @ Parbhani
             </Typography>*/}
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -97,7 +99,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             </Typography>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="mt-1 mb-12 w-full md:max-w-full lg:max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,7 +115,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             )}
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="flex items-center gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -123,8 +125,8 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button 
-                variant="gradient" 
+              <Button
+                variant="gradient"
                 color="white"
                 onClick={handleMenuClick}
                 {...materialProps}

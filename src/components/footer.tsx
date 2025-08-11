@@ -33,7 +33,8 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="relative w-full bg-white px-8 pt-8">
+    <footer className="relative w-full bg-white px-8 pt-8"
+    style={{ minHeight: '100px' }}>
       <div className="container mx-auto">
         <div className="flex flex-wrap justify-between items-center">
           <Typography variant="h5" className="mb-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar, Footer } from "@/components";
+import { Navbar} from "@/components";
 import { MenuItemCard } from "@/components/menu-item-card";
 import {
   Typography,
@@ -124,12 +124,12 @@ export default function TableMenu() {
     if (item.imageUrl) {
       return item.imageUrl;
     }
-    
+
     // Check if item has image field (fallback)
     if (item.image) {
       return `${CLOUDINARY_BASE_URL}${item.image}`;
     }
-    
+
     // Return a default placeholder image
     return "https://images.unsplash.com/photo-1504674900240-9c69d0c2e5b7?w=500&h=300&fit=crop&crop=center";
   };
@@ -139,7 +139,7 @@ export default function TableMenu() {
     const filtered = Object.entries(menuData).filter(([category]) =>
       selectedCategory === 'all' || category === selectedCategory
     ) as [string, any[]][];
-  
+
     return filtered.map(([category, items]) => [
       category,
       items
@@ -151,7 +151,7 @@ export default function TableMenu() {
         )
     ]) as [string, any[]][];
   }, [menuData, selectedCategory, searchQuery]);
-  
+
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -230,6 +230,7 @@ export default function TableMenu() {
   }, [tableId, router]);
 
   const handleAddToCart = (item: any, quantity: number) => {
+    let added = false;
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(cartItem => cartItem.name === item.name);
       let newCart;
@@ -243,7 +244,7 @@ export default function TableMenu() {
 
       // Use new storage utility
       if (cartStorage.save(tableId, newCart)) {
-        toast.success('Item added to cart');
+        added = true;
       }
       return newCart;
     });
@@ -270,51 +271,48 @@ export default function TableMenu() {
   return (
     <>
       <Navbar />
+      
       <Toaster />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
         <div className="pt-24 pb-32 px-4 md:px-8">
           <div className="container mx-auto">
             {/* Table Info Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Card className="mb-8 bg-white shadow-lg border border-blue-50" {...materialProps}>
-                <CardBody {...materialProps}>
-                  <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div className="text-center md:text-left">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold">{tableId}</span>
-                        </div>
-                        <Typography variant="h3" color="blue-gray" className="font-bold" {...materialProps}>
-                          Table {tableId}
-                        </Typography>
+
+            <Card className="mb-8 bg-white shadow-lg border border-blue-50" {...materialProps}>
+              <CardBody {...materialProps}>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <div className="text-center md:text-left">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold">{tableId}</span>
                       </div>
-                      <Typography variant="lead" color="gray" className="font-normal" {...materialProps}>
-                        Welcome! Ready to order?
+                      <Typography variant="h3" color="blue-gray" className="font-bold" {...materialProps}>
+                        Table {tableId}
                       </Typography>
                     </div>
-                    {cart.length > 0 && (
-                      <Button
-                        color="blue"
-                        size="lg"
-                        onClick={() => router.push(`/table/${tableId}/cart`)}
-                        className="flex items-center gap-3 px-6"
-                        {...materialProps}
-                      >
-                        <span>View Cart</span>
-                        <div className="flex items-center gap-2 bg-white text-blue-500 px-3 py-1 rounded-full">
-                          <span className="text-sm font-bold">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
-                          <span className="text-sm">items</span>
-                        </div>
-                      </Button>
-                    )}
+                    <Typography variant="lead" color="gray" className="font-normal" {...materialProps}>
+                      Welcome! Ready to order?
+                    </Typography>
                   </div>
-                </CardBody>
-              </Card>
-            </motion.div>
+                  {cart.length > 0 && (
+                    <Button
+                      color="blue"
+                      size="lg"
+                      onClick={() => router.push(`/table/${tableId}/cart`)}
+                      className="flex items-center gap-3 px-6"
+                      {...materialProps}
+                    >
+                      <span>View Cart</span>
+                      <div className="flex items-center gap-2 bg-white text-blue-500 px-3 py-1 rounded-full">
+                        <span className="text-sm font-bold">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
+                        <span className="text-sm">items</span>
+                      </div>
+                    </Button>
+                  )}
+                </div>
+              </CardBody>
+            </Card>
+
 
             {/* Search and Filter Section */}
             <div className="mb-8">
@@ -339,11 +337,10 @@ export default function TableMenu() {
                 <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
                   <div
                     onClick={() => handleChipClick('all')}
-                    className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedCategory === 'all' 
-                        ? 'bg-blue-500 text-white shadow-md' 
+                    className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${selectedCategory === 'all'
+                        ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-blue-gray-50 text-gray-700 hover:bg-blue-gray-100'
-                    }`}
+                      }`}
                   >
                     All
                   </div>
@@ -351,11 +348,10 @@ export default function TableMenu() {
                     <div
                       key={category}
                       onClick={() => handleChipClick(category)}
-                      className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                        selectedCategory === category 
-                          ? 'bg-blue-500 text-white shadow-md' 
+                      className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${selectedCategory === category
+                          ? 'bg-blue-500 text-white shadow-md'
                           : 'bg-blue-gray-50 text-gray-700 hover:bg-blue-gray-100'
-                      }`}
+                        }`}
                     >
                       {category.replace(/_/g, " ")}
                     </div>
@@ -365,82 +361,84 @@ export default function TableMenu() {
             </div>
 
             {/* Menu Content */}
-            {isLoading ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex flex-col items-center justify-center py-24"
-              >
-                <Loading/>
-                <Typography variant="h6" color="gray" {...materialProps}>
-                  Loading menu...
-                </Typography>
-              </motion.div>
-            ) : (
-              <AnimatePresence mode="wait">
+            <div style={{ minHeight: '600px' }}>
+              {isLoading ? (
                 <motion.div
-                  key={selectedCategory + searchQuery}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-col items-center justify-center py-24"
                 >
-                  {filteredMenu.map(([category, items]) => items.length > 0 && (
-                    <motion.div
-                      key={category}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mb-12"
-                    >
-                      <Typography variant="h4" color="blue-gray" className="font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize flex items-center" {...materialProps}>
-                        {category.replace(/_/g, " ")}
-                        <span className="ml-3 text-sm text-gray-500 font-normal">
-                          ({items.length} items)
-                        </span>
-                      </Typography>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {items.filter(item => !item.paused)
-                          .map((item, index) => {
-                            const imageUrl = getImageUrl(item);
-                            
-                            return (
-                              <motion.div
-                                key={item.name}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: index * 0.1 }}
-                              >
-                                <MenuItemCard
-                                  {...item}
-                                  price={`₹${item.price}`}
-                                  img={imageUrl}
-                                  onAddToCart={(quantity) => handleAddToCart(item, quantity)}
-                                />
-                              </motion.div>
-                            );
-                          })}
-                      </div>
-                    </motion.div>
-                  ))}
-
-                  {/* No Results Message */}
-                  {filteredMenu.every(([_, items]) => items.length === 0) && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-center py-12"
-                    >
-                      <Typography variant="h6" color="gray" {...materialProps}>
-                        No menu items found
-                      </Typography>
-                      <Typography color="gray" className="mt-2" {...materialProps}>
-                        Try adjusting your search or filters
-                      </Typography>
-                    </motion.div>
-                  )}
+                  <Loading />
+                  <Typography variant="h6" color="gray" {...materialProps}>
+                    Loading menu...
+                  </Typography>
                 </motion.div>
-              </AnimatePresence>
-            )}
+              ) : (
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={selectedCategory + searchQuery}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {filteredMenu.map(([category, items]) => items.length > 0 && (
+                      <motion.div
+                        key={category}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-12"
+                      >
+                        <Typography variant="h4" color="blue-gray" className="font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize flex items-center" {...materialProps}>
+                          {category.replace(/_/g, " ")}
+                          <span className="ml-3 text-sm text-gray-500 font-normal">
+                            ({items.length} items)
+                          </span>
+                        </Typography>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {items.filter(item => !item.paused)
+                            .map((item, index) => {
+                              const imageUrl = getImageUrl(item);
+
+                              return (
+                                <motion.div
+                                  key={item.name}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0 }}
+                                >
+                                  <MenuItemCard
+                                    {...item}
+                                    price={`₹${item.price}`}
+                                    img={imageUrl}
+                                    onAddToCart={(quantity) => handleAddToCart(item, quantity)}
+                                  />
+                                </motion.div>
+                              );
+                            })}
+                        </div>
+                      </motion.div>
+                    ))}
+
+                    {/* No Results Message */}
+                    {filteredMenu.every(([_, items]) => items.length === 0) && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-12"
+                      >
+                        <Typography variant="h6" color="gray" {...materialProps}>
+                          No menu items found
+                        </Typography>
+                        <Typography color="gray" className="mt-2" {...materialProps}>
+                          Try adjusting your search or filters
+                        </Typography>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              )}
+            </div>
           </div>
         </div>
 
@@ -448,8 +446,9 @@ export default function TableMenu() {
         {cart.length > 0 && (
           <motion.div
             initial={{ y: 100 }}
-            animate={{ y: 0 }}
+            animate={{ y: cart.length > 0 ? 0 : 100 }}
             className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t z-50 py-4 px-6"
+            style={{ height: '72px' }}
           >
             <div className="container mx-auto flex justify-between items-center">
               <div className="flex items-center gap-4">

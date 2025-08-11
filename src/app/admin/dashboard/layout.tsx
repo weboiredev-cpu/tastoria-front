@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Loading from "@/components/Loading";
 import {
   Typography,
   List,
@@ -87,6 +88,7 @@ export default function AdminDashboardLayout({
               </Link>
             );
           })}
+          {/*
           <ListItem
             className="text-red-500 hover:bg-red-50 focus:bg-red-50 cursor-pointer"
             onClick={() => router.push("/admin/signin")}
@@ -96,6 +98,7 @@ export default function AdminDashboardLayout({
             </ListItemPrefix>
             Logout
           </ListItem>
+          */}
         </List>
       </div>
 
@@ -114,9 +117,13 @@ export default function AdminDashboardLayout({
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
           </div>
         ) : status === "unauthenticated" ? (
-          <div className="flex justify-center items-center min-h-screen">
-            <p>Redirecting to login...</p>
+          <div className="flex justify-center items-center min-h-screen bg-gray-50">
+            <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-white shadow-lg border border-gray-200">
+              <Loading /> {/* Spinner component */}
+              <p className="text-blue-700 text-lg font-medium">Redirecting to login...</p>
+            </div>
           </div>
+
         ) : (
           children
         )}

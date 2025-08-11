@@ -45,6 +45,7 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader floated={false} shadow={false} className="h-56 relative overflow-hidden">
+      <div style={{ aspectRatio: '5 / 3', width: '100%' }}>
         <Image
           src={imageUrl}
           alt={name ?? "Food item"}
@@ -53,6 +54,7 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
           className="h-full w-full object-cover transform transition-transform duration-300 hover:scale-110"
           onError={() => setImageError(true)}
         />
+         </div>
         <div className={`absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-300 flex items-center justify-center ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
           <Typography variant="h6" color="white" className="text-shadow">
             Click to Order
