@@ -33,7 +33,7 @@ interface Order {
   orderTime: string;
 }
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:5001");
 
 export default function OrdersManagement() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -43,22 +43,14 @@ export default function OrdersManagement() {
   const [selectedSource, setSelectedSource] = useState<string>("all");
 
 
-  // Material Tailwind component props
-  const materialProps = {
+  // Material Tailwind component props (keep minimal to avoid React warnings)
+  const materialProps: any = {
     placeholder: "",
-    onResize: undefined,
-    onResizeCapture: undefined,
-    onPointerEnterCapture: undefined,
-    onPointerLeaveCapture: undefined,
-    onAnimationStart: undefined,
-    onDragStart: undefined,
-    onDragEnd: undefined,
-    onDrag: undefined
   };
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/orders");
+      const response = await fetch("http://localhost:5001/api/orders");
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
@@ -74,7 +66,7 @@ export default function OrdersManagement() {
 
   const updateOrderStatus = async (orderId: string, newStatus: Order["status"]) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const response = await fetch(`http://localhost:5001/api/orders/${orderId}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -233,7 +225,7 @@ export default function OrdersManagement() {
             </Card>
 
             <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300" {...materialProps}>
-              <CardBody className="text-center" {...materialProps}>
+              <CardBody className="text-center" placeholder="" {...materialProps}>
                 <FiShoppingBag className="h-8 w-8 mx-auto mb-3" />
                 <Typography variant="h4" className="font-bold" {...materialProps}>
                   ₹{totalRevenue}
@@ -247,7 +239,7 @@ export default function OrdersManagement() {
 
           {/* Filters Section */}
           <Card className="mb-8 shadow-lg border-0 bg-gradient-to-r from-white to-gray-50" {...materialProps}>
-            <CardBody className="p-6" {...materialProps}>
+            <CardBody className="p-6" placeholder="" {...materialProps}>
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div className="flex items-center gap-2">
                   <FiFilter className="h-5 w-5 text-blue-500" />

@@ -10,11 +10,11 @@ const FAQS = [
     desc: "We are open daily from 7:00 AM to 10:00 PM. We also offer early bird specials from 7:00 AM to 9:00 AM for our morning customers.",
   },
   {
-    title: "4. Do you have vegetarian and vegan options?",
+    title: "2. Do you have vegetarian and vegan options?",
     desc: "Yes, we have a wide variety of vegetarian and vegan options on our menu. Our kitchen team is happy to accommodate dietary restrictions and can modify many of our dishes to meet your needs.",
   },
   {
-    title: "5. Do you host events or private parties?",
+    title: "3. Do you host events or private parties?",
     desc: "We do! Tastoria Cafe is perfect for intimate gatherings, business meetings, and special celebrations. We offer catering services and can accommodate groups of various sizes. Contact us for more details about our event packages.",
   },
 ];

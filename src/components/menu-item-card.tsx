@@ -23,7 +23,6 @@ interface MenuItemCardProps {
 
 export function MenuItemCard({ name, description, price, img, onAddToCart }: MenuItemCardProps) {
   const [quantity, setQuantity] = useState(1);
-  const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = () => {
@@ -39,11 +38,7 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
   const imageUrl = img && !imageError ? img : fallbackImage;
 
   return (
-    <Card
-      className="border border-blue-gray-100 shadow-lg transform transition-all duration-300 hover:scale-105"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <Card className="border border-blue-gray-100 shadow-lg transform transition-all duration-300 hover:scale-105">
       <CardHeader floated={false} shadow={false} className="h-56 relative overflow-hidden">
         <Image
           src={imageUrl}
@@ -53,11 +48,7 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
           className="h-full w-full object-cover transform transition-transform duration-300 hover:scale-110"
           onError={() => setImageError(true)}
         />
-        <div className={`absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-300 flex items-center justify-center ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-          <Typography variant="h6" color="white" className="text-shadow">
-            Click to Order
-          </Typography>
-        </div>
+        {/* The overlay div has been removed from here. */}
       </CardHeader>
 
       <CardBody className="text-center p-6">
@@ -111,4 +102,4 @@ export function MenuItemCard({ name, description, price, img, onAddToCart }: Men
   );
 }
 
-export default MenuItemCard; 
+export default MenuItemCard;

@@ -17,10 +17,11 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 
-import { FiEdit2, FiTrash2, FiPlus, FiUpload } from "react-icons/fi";
+import { FiEdit2, FiTrash2, FiPlus, FiUpload, FiSearch } from "react-icons/fi";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import Loading from "@/components/Loading"
+
 interface MenuItem {
   _id: string;
   name: string;
@@ -65,7 +66,7 @@ export default function MenuManagement() {
 
   const fetchMenuItems = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/menu/all");
+      const res = await fetch("http://localhost:5001/api/menu/all");
       const data = await res.json();
       if (data.success) {
         setMenuItems(data.items);
@@ -102,43 +103,6 @@ export default function MenuManagement() {
     }
   };
 
-  const uploadImage = async (
-    file: File,
-    name: string,
-    description: string,
-    price: number,
-    category: string
-  ): Promise<any> => {
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("price", price.toString());
-    formData.append("category", category);
-    if (file) formData.append('image', file);
-
-    try {
-      const response = await fetch("http://localhost:5000/api/menu/add", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        toast.success("Menu item added successfully");
-        setShowAddDialog(false);
-        fetchMenuItems();
-        setFormData({ name: "", description: "", price: "", category: "", img: "" });
-        setSelectedImage(null);
-        setImagePreview("");
-      } else {
-        toast.error(data.message || "Failed to add menu item");
-      }
-    } catch (err) {
-      console.error("Error adding menu item:", err);
-      toast.error("Error adding menu item");
-    }
-  };
-
   const handleAddItem = async () => {
     try {
       const price = parseFloat(formData.price);
@@ -152,15 +116,14 @@ export default function MenuManagement() {
         return;
       }
 
-      // Upload image first
      const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("price", price.toString());
-    formDataToSend.append("category", formData.category);
-    formDataToSend.append("image", selectedImage);
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("price", price.toString());
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("image", selectedImage);
 
-      const response = await fetch("http://localhost:5000/api/menu/add", {
+      const response = await fetch("http://localhost:5001/api/menu/add", {
         method: "POST",
         body: formDataToSend,
       });
@@ -207,7 +170,7 @@ export default function MenuManagement() {
         updateData.append("image", selectedImage);
       }
 
-      const response = await fetch(`http://localhost:5000/api/menu/update/${selectedItem._id}`, {
+      const response = await fetch(`http://localhost:5001/api/menu/update/${selectedItem._id}`, {
         method: "PUT",
         body: updateData,
       });
@@ -232,7 +195,7 @@ export default function MenuManagement() {
     if (!confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/menu/delete/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/menu/delete/${id}`, {
         method: "DELETE",
       });
 
@@ -248,9 +211,10 @@ export default function MenuManagement() {
       toast.error("Error deleting menu item");
     }
   };
+
   const handleTogglePause = async (id: string, currentStatus: boolean) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/menu/toggle/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/menu/toggle/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paused: !currentStatus }),
@@ -269,7 +233,6 @@ export default function MenuManagement() {
     }
   };
   
-
   const openEditDialog = (item: MenuItem) => {
     setSelectedItem(item);
     setFormData({
@@ -284,9 +247,8 @@ export default function MenuManagement() {
 
   if (loading) {
     return (
-     
       <div className="h-screen flex items-center justify-center">
-      <Loading />
+        <Loading />
       </div>
     );
   }
@@ -297,7 +259,6 @@ export default function MenuManagement() {
     return nameMatch && categoryMatch;
   });
 
-  // Material Tailwind component props for required event handlers
   const materialProps = {
     placeholder: "",
     onResize: () => { },
@@ -307,48 +268,58 @@ export default function MenuManagement() {
   };
 
   return (
+    
     <div className="p-6 bg-gradient-to-br from-blue-50 to-white min-h-screen">
+      {/* --- MODIFIED HEADER SECTION --- */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-10 gap-6">
-        <Typography variant="h3" color="blue-gray" className="font-bold tracking-tight drop-shadow-md" {...materialProps}>
+        <Typography variant="h3" color="blue-gray" className="font-bold tracking-tight drop-shadow-md" >
           🍽️ Menu Management
         </Typography>
-        <div className="w-full bg-white rounded-xl shadow-md p-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-blue-100">
-          <div className="w-full md:w-1/2">
-            <Input
-              label="🔍 Search by name"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white/80 shadow-sm rounded-lg focus:ring-2 focus:ring-blue-300"
-              crossOrigin={undefined}
-              {...materialProps}
-            />
-          </div>
-          <div className="w-full md:w-1/2">
-            <Select
-              label="📂 Filter by category"
-              value={filterCategory}
-              onChange={(value) => setFilterCategory(value || "")}
-              className="w-full bg-white/80 shadow-sm rounded-lg"
-              {...materialProps}
-            >
-              <Option value="">All Categories</Option>
-              {categories.map((cat) => (
-                <Option key={cat} value={cat} className="capitalize">
-                  {cat.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        </div>
 
-        <Button
-          className="flex items-center gap-2 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 shadow-lg px-6 py-3 rounded-xl text-white font-semibold text-lg transition-all duration-200"
-          onClick={() => setShowAddDialog(true)}
-          {...materialProps}
-        >
-          <FiPlus className="h-5 w-5" /> Add New Item
-        </Button>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
+          {/* Card for filters */}
+          <div className="flex flex-col md:flex-row items-center gap-10 p-3 rounded-xl shadow-md bg-white border border-blue-100">
+            <div className="w-full md:w-64">
+              <Input
+                label="Search by name"
+                icon={<FiSearch />}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-white/80"
+                crossOrigin={undefined}
+              
+              />
+            </div>
+            <div className="w-full md:w-64">
+              <Select
+                label="Filter by category"
+                value={filterCategory}
+                onChange={(value) => setFilterCategory(value || "")}
+                className="bg-white/80"
+               
+              >
+                <Option value="">All Categories</Option>
+                {categories.map((cat) => (
+                  <Option key={cat} value={cat} className="capitalize">
+                    {cat.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          {/* Add New Item Button */}
+          <Button
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 shadow-lg px-6 py-3 rounded-xl text-white font-semibold text-base transition-all duration-200 h-full"
+            onClick={() => setShowAddDialog(true)}
+           
+          >
+            <FiPlus className="h-5 w-5" /> Add New Item
+          </Button>
+        </div>
       </div>
+      {/* --- END OF MODIFIED SECTION --- */}
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredItems.map((item) => (
@@ -367,25 +338,25 @@ export default function MenuManagement() {
                 {item.category.replace(/_/g, " ")}
               </div>
             </div>
-            <CardBody className="p-5" {...materialProps}>
+            <CardBody className="p-5" >
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <Typography variant="h5" color="blue-gray" className="font-bold text-lg" {...materialProps}>
+                  <Typography variant="h5" color="blue-gray" className="font-bold text-lg">
                     {item.name}
                   </Typography>
                 </div>
-                <Typography variant="h6" color="blue-gray" className="font-bold text-xl text-green-600" {...materialProps}>
+                <Typography variant="h6" color="blue-gray" className="font-bold text-xl text-green-600" >
                   ₹{item.price}
                 </Typography>
               </div>
-              <Typography color="gray" className="mb-4 text-sm min-h-[48px]" {...materialProps}>
+              <Typography color="gray" className="mb-4 text-sm min-h-[48px]" >
                 {item.description}
               </Typography>
               <Typography
                 variant="small"
                 color={item.paused ? "red" : "green"}
                 className="mb-2 font-medium"
-                {...materialProps}
+                
               >
                 Status: {item.paused ? "Paused" : "Active"}
               </Typography>
@@ -395,7 +366,7 @@ export default function MenuManagement() {
                 color={item.paused ? "green" : "orange"}
                 className="rounded-md mb-2"
                 onClick={() => handleTogglePause(item._id, item.paused ?? false)}
-                {...materialProps}
+               
               >
                 {item.paused ? "Resume" : "Pause"}
               </Button>
@@ -406,7 +377,7 @@ export default function MenuManagement() {
                   color="blue-gray"
                   className="hover:bg-blue-50 focus:bg-blue-100 rounded-full"
                   onClick={() => openEditDialog(item)}
-                  {...materialProps}
+                
                 >
                   <FiEdit2 className="h-5 w-5" />
                 </IconButton>
@@ -415,7 +386,7 @@ export default function MenuManagement() {
                   color="red"
                   className="hover:bg-red-50 focus:bg-red-100 rounded-full"
                   onClick={() => handleDeleteItem(item._id)}
-                  {...materialProps}
+                
                 >
                   <FiTrash2 className="h-5 w-5" />
                 </IconButton>
@@ -431,12 +402,12 @@ export default function MenuManagement() {
         handler={() => (showAddDialog ? setShowAddDialog(false) : setShowEditDialog(false))}
         size="md"
         className="rounded-2xl shadow-2xl bg-white/95"
-        {...materialProps}
+     
       >
-        <DialogHeader className="text-2xl font-bold text-blue-700" {...materialProps}>
+        <DialogHeader className="text-2xl font-bold text-blue-700" >
           {showAddDialog ? "Add New Menu Item" : "Edit Menu Item"}
         </DialogHeader>
-        <DialogBody divider className="overflow-y-auto max-h-[600px] bg-gradient-to-br from-blue-50 to-white" {...materialProps}>
+        <DialogBody divider className="overflow-y-auto max-h-[600px] bg-gradient-to-br from-blue-50 to-white" >
           <div className="space-y-5">
             <Input
               label="Name"
@@ -444,7 +415,7 @@ export default function MenuManagement() {
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="bg-white/80 rounded-lg"
               crossOrigin={undefined}
-              {...materialProps}
+              
             />
             <Input
               label="Description"
@@ -452,7 +423,7 @@ export default function MenuManagement() {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="bg-white/80 rounded-lg"
               crossOrigin={undefined}
-              {...materialProps}
+         
             />
             <Input
               label="Price"
@@ -461,14 +432,14 @@ export default function MenuManagement() {
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               className="bg-white/80 rounded-lg"
               crossOrigin={undefined}
-              {...materialProps}
+             
             />
             <Select
               label="Category"
               value={formData.category}
               onChange={(value) => setFormData({ ...formData, category: value || "" })}
               className="bg-white/80 rounded-lg"
-              {...materialProps}
+          
             >
               {categories.map((category) => (
                 <Option key={category} value={category} className="capitalize">
@@ -523,7 +494,7 @@ export default function MenuManagement() {
             </div>
           </div>
         </DialogBody>
-        <DialogFooter className="flex gap-4" {...materialProps}>
+        <DialogFooter className="flex gap-4" >
           <Button
             variant="text"
             color="red"
@@ -537,7 +508,7 @@ export default function MenuManagement() {
               setImagePreview("");
             }}
             className="mr-1 px-6 py-2 rounded-lg text-base hover:bg-red-50 hover:text-red-700 transition-all duration-200"
-            {...materialProps}
+           
           >
             Cancel
           </Button>
@@ -545,7 +516,7 @@ export default function MenuManagement() {
             color={showAddDialog ? "green" : "blue"}
             className="px-8 py-2 rounded-lg text-base font-semibold shadow-md bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white transition-all duration-200"
             onClick={showAddDialog ? handleAddItem : handleEditItem}
-            {...materialProps}
+          
           >
             {showAddDialog ? "Add Item" : "Update Item"}
           </Button>
@@ -553,4 +524,4 @@ export default function MenuManagement() {
       </Dialog>
     </div>
   );
-} 
+}

@@ -76,7 +76,7 @@ export default function OrderConfirmation() {
       setOrderDetails(newOrder);
       localStorage.setItem('cart', '[]');
 
-      fetch('http://localhost:5000/api/users/phone', {
+      fetch('http://localhost:5001/api/users/phone', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

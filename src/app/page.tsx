@@ -50,12 +50,14 @@ export default function Portfolio() {
       variants={pageVariants}
     >
       <Navbar />
+      <br></br>
       <section
         className="relative min-h-screen flex flex-col justify-center items-center bg-black"
         style={{
           backgroundImage: "url('/image/newCafe.jpg')", // Change to your hero image path
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+        
         }}
       >
         <div className="absolute inset-0 bg-black/60" /> {/* Overlay for readability */}

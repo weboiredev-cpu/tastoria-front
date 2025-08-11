@@ -182,7 +182,7 @@ export default function TableCart() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/orders/place", {
+      const response = await fetch("http://localhost:5001/api/orders/place", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
@@ -222,7 +222,7 @@ export default function TableCart() {
               variant="text"
               className="flex items-center gap-2"
               onClick={() => router.push(`/table/${tableId}`)}
-              {...materialProps}
+             
             >
               <FiArrowLeft className="h-4 w-4" />
               <span>Back to Menu</span>
@@ -231,7 +231,7 @@ export default function TableCart() {
               <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold">{tableId}</span>
               </div>
-              <Typography variant="h4" color="blue-gray" className="font-bold" {...materialProps}>
+              <Typography variant="h4" color="blue-gray" className="font-bold" >
                 Table {tableId}
               </Typography>
             </div>
@@ -239,8 +239,8 @@ export default function TableCart() {
 
           {/* Cart Items */}
           {cart.length > 0 ? (
-            <Card className="overflow-hidden shadow-lg" {...materialProps}>
-              <CardBody className="p-0" {...materialProps}>
+            <Card className="overflow-hidden shadow-lg" >
+              <CardBody className="p-0" >
                 <div className="divide-y divide-gray-200">
                   {cart.map((item, index) => (
                     <motion.div
@@ -249,7 +249,7 @@ export default function TableCart() {
                       className="p-4 flex items-center justify-between gap-4"
                     >
                       <div className="flex-1">
-                        <Typography variant="h6" color="blue-gray" className="font-medium" {...materialProps}>
+                        <Typography variant="h6" color="blue-gray" className="font-medium" >
                           {item.name}
                         </Typography>
                         <div className="flex items-center gap-3">
@@ -262,7 +262,7 @@ export default function TableCart() {
                           </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <Typography variant="h6" color="blue-gray" className="font-bold" {...materialProps}>
+                        <Typography variant="h6" color="blue-gray" className="font-bold" >
                           ₹{item.price * item.quantity}
                         </Typography>
                         <div className="flex items-center gap-2">
@@ -271,11 +271,11 @@ export default function TableCart() {
                             color="blue-gray"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity - 1)}
-                            {...materialProps}
+                            
                           >
                             <FiMinus className="h-4 w-4" />
                           </IconButton>
-                          <Typography variant="h6" className="w-8 text-center" {...materialProps}>
+                          <Typography variant="h6" className="w-8 text-center" >
                             {item.quantity}
                           </Typography>
                           <IconButton
@@ -283,7 +283,7 @@ export default function TableCart() {
                             color="blue-gray"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity + 1)}
-                            {...materialProps}
+                           
                           >
                             <FiPlus className="h-4 w-4" />
                           </IconButton>
@@ -292,7 +292,7 @@ export default function TableCart() {
                             color="red"
                             size="sm"
                             onClick={() => removeItem(index)}
-                            {...materialProps}
+                           
                           >
                             <FiTrash2 className="h-4 w-4" />
                           </IconButton>
@@ -311,17 +311,17 @@ export default function TableCart() {
               <div className="flex justify-center mb-4">
                 <FiShoppingBag className="h-16 w-16 text-blue-gray-300" />
               </div>
-              <Typography variant="h5" color="blue-gray" className="mb-2" {...materialProps}>
+              <Typography variant="h5" color="blue-gray" className="mb-2">
                 Your cart is empty
               </Typography>
-              <Typography color="gray" className="mb-6" {...materialProps}>
+              <Typography color="gray" className="mb-6" >
                 Add some delicious items from the menu
               </Typography>
               <Button
                 color="blue"
                 onClick={() => router.push(`/table/${tableId}`)}
                 className="mt-4"
-                {...materialProps}
+              
               >
                 Browse Menu
               </Button>
@@ -334,13 +334,13 @@ export default function TableCart() {
               variants={itemVariants}
               className="mt-8"
             >
-              <Card className="bg-blue-50 border border-blue-100" {...materialProps}>
-                <CardBody {...materialProps}>
+              <Card className="bg-blue-50 border border-blue-100" >
+                <CardBody >
                   <div className="flex justify-between items-center mb-4">
-                    <Typography variant="h6" color="blue-gray" {...materialProps}>
+                    <Typography variant="h6" color="blue-gray" >
                       Order Summary
                     </Typography>
-                    <Typography variant="h4" color="blue-gray" className="font-bold" {...materialProps}>
+                    <Typography variant="h4" color="blue-gray" className="font-bold" >
                       ₹{total}
                     </Typography>
                   </div>
@@ -350,7 +350,7 @@ export default function TableCart() {
                     className="w-full"
                     onClick={handlePlaceOrder}
                     disabled={isLoading}
-                    {...materialProps}
+                   
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
