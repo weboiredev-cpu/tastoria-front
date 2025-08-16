@@ -76,34 +76,7 @@ export default function OrderConfirmation() {
       setOrderDetails(newOrder);
       localStorage.setItem('cart', '[]');
 
-      // Send order to backend
-      try {
-        const orderForBackend = {
-          tableId: "1", // Default table for website orders
-          customerName: session.user.name || "Guest",
-          phoneNumber: localStorage.getItem('userPhone') || "Not provided",
-          userEmail: session.user.email,
-          items: cart,
-          total: total,
-          orderTime: new Date().toISOString(),
-          source: "website"
-        };
-
-        const orderResponse = await fetch("http://localhost:5000/api/orders/place", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(orderForBackend),
-        });
-
-        const orderData = await orderResponse.json();
-        if (!orderData.success) {
-          console.error('Failed to send order to backend:', orderData.message);
-        }
-      } catch (error) {
-        console.error('Error sending order to backend:', error);
-      }
-
-      fetch('http://localhost:5000/api/users/phone', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/phone`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -63,7 +63,7 @@ interface Order {
   orderTime: string;
 }
 
-const socket = io("http://localhost:5000");
+const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 // --- MAIN COMPONENT ---
 export default function OrdersManagement() {
@@ -76,7 +76,7 @@ export default function OrdersManagement() {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/orders");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
       if (!response.ok) throw new Error("Failed to fetch orders");
       const data = await response.json();
       setOrders(data.orders);
@@ -98,7 +98,7 @@ export default function OrdersManagement() {
 
   const updateOrderStatus = async (orderId: string, newStatus: Order["status"]) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),

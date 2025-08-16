@@ -49,7 +49,7 @@ export default function MenuPage() {
     const fetchMenu = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch("http://localhost:5000/api/menu/all");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/all`);
         const data = await res.json();
 
         if (data.success) {
@@ -76,7 +76,7 @@ export default function MenuPage() {
 
   // Socket listener for real-time menu status updates
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
     socket.on("menuStatusChanged", ({ itemId, paused }) => {
       setMenuData((prevMenu) => {

@@ -20,7 +20,7 @@ import Loading from "@/components/Loading";
 import { FiSearch } from "react-icons/fi";
 import { FaShoppingCart } from "react-icons/fa"; // Added for cart icon
 
-const VALID_TABLES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const VALID_TABLES = Array.from({ length: 30 }, (_, i) => String(i + 1));
 const STORAGE_KEY_PREFIX = 'table_';
 const MAX_CART_ITEMS = 50;
 
@@ -136,7 +136,7 @@ export default function TableMenu() {
     const fetchMenu = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch("http://localhost:5000/api/menu/all");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/all`);
         const data = await res.json();
 
         if (data.success) {
@@ -162,7 +162,7 @@ export default function TableMenu() {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
     socket.on("menuStatusChanged", ({ itemId, paused }) => {
       setMenuData((prevMenu) => {

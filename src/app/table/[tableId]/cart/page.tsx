@@ -201,7 +201,7 @@ const [savingPhone, setSavingPhone] = useState(false);
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/orders/place", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/place`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),

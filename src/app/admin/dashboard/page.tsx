@@ -90,7 +90,7 @@ const containerVariants = {
   }
 };
 
-const socket = io('http://localhost:5000');
+const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -150,9 +150,9 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const [statsRes, recentOrdersRes, popularItemsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/admin/stats'),
-        fetch('http://localhost:5000/api/orders/recent'),
-        fetch('http://localhost:5000/api/orders/most-sold'),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/stats`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/recent`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/most-sold`),
       ]);
 
       if (!statsRes.ok || !recentOrdersRes.ok || !popularItemsRes.ok) throw new Error('Failed to fetch data');

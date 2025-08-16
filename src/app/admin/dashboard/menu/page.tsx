@@ -66,7 +66,7 @@ export default function MenuManagement() {
 
   const fetchMenuItems = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/menu/all");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/all`);
       const data = await res.json();
       if (data.success) {
         setMenuItems(data.items);
@@ -123,7 +123,7 @@ export default function MenuManagement() {
       formDataToSend.append("category", formData.category);
       formDataToSend.append("image", selectedImage);
 
-      const response = await fetch("http://localhost:5000/api/menu/add", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/add`, {
         method: "POST",
         body: formDataToSend,
       });
@@ -170,7 +170,7 @@ export default function MenuManagement() {
         updateData.append("image", selectedImage);
       }
 
-      const response = await fetch(`http://localhost:5000/api/menu/update/${selectedItem._id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/update/${selectedItem._id}`, {
         method: "PUT",
         body: updateData,
       });
@@ -195,7 +195,7 @@ export default function MenuManagement() {
     if (!confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/menu/delete/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/delete/${id}`, {
         method: "DELETE",
       });
 
@@ -214,7 +214,7 @@ export default function MenuManagement() {
 
   const handleTogglePause = async (id: string, currentStatus: boolean) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/menu/toggle/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/toggle/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paused: !currentStatus }),
