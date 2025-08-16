@@ -22,7 +22,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from 'framer-motion';
 
-const VALID_TABLES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
+
+const VALID_TABLES = Array.from({ length: 30 }, (_, i) => String(i + 1));
+
 
 // Cart Storage Utilities - Keep in sync with table menu page
 const STORAGE_KEY_PREFIX = 'table_';
@@ -44,7 +47,7 @@ const cartStorage = {
 
       const storageKey = `${STORAGE_KEY_PREFIX}${tableId}_cart`;
       const cartString = JSON.stringify(cart);
-      
+
       try {
         localStorage.setItem(storageKey, cartString);
         return true;
@@ -112,8 +115,12 @@ export default function TableCart() {
   const tableId = params.tableId as string;
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
-  const { data: session } = useSession();
+  const { data: session , update } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPhoneDialog, setShowPhoneDialog] = useState(false);
+const [phoneInput, setPhoneInput] = useState("");
+const [phoneError, setPhoneError] = useState("");
+const [savingPhone, setSavingPhone] = useState(false);
 
   // Material Tailwind component props
   const materialProps = {
@@ -137,10 +144,13 @@ export default function TableCart() {
     const initialCart = cartStorage.load(tableId);
     setCart(initialCart);
     calculateTotal(initialCart);
+    if (session?.user && !session.user.phone) {
+      setShowPhoneDialog(true);
+    }
   }, [tableId, router]);
 
   const calculateTotal = (cartItems: CartItem[]) => {
-    const sum = cartItems.reduce((total, item) => 
+    const sum = cartItems.reduce((total, item) =>
       total + (item.price * item.quantity), 0
     );
     setTotal(sum);
@@ -167,6 +177,12 @@ export default function TableCart() {
   };
 
   const handlePlaceOrder = async () => {
+
+    if (!session?.user?.phone || !/^\d{10}$/.test(session.user.phone)) {
+      toast.error("Please enter a valid 10-digit phone number before placing the order");
+      setShowPhoneDialog(true); // Open the phone dialog
+      return; // Stop order placement
+    }
     if (cart.length === 0) {
       toast.error('Cart is empty');
       return;
@@ -175,10 +191,13 @@ export default function TableCart() {
     setIsLoading(true);
     const order = {
       tableId,
+      customerName: session?.user?.name || "Guest",
+      phoneNumber: session?.user?.phone,
       userEmail: session?.user?.email || "",
       items: cart,
       total,
       orderTime: new Date().toISOString(),
+      source: "website"
     };
 
     try {
@@ -216,31 +235,36 @@ export default function TableCart() {
           className="max-w-4xl mx-auto"
         >
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-8 mt-14">
             <Button
               color="blue-gray"
               variant="text"
               className="flex items-center gap-2"
               onClick={() => router.push(`/table/${tableId}`)}
-              {...materialProps}
             >
               <FiArrowLeft className="h-4 w-4" />
               <span>Back to Menu</span>
             </Button>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-6">
               <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold">{tableId}</span>
               </div>
-              <Typography variant="h4" color="blue-gray" className="font-bold" {...materialProps}>
+              <Typography variant="h4" color="blue-gray" className="font-bold">
                 Table {tableId}
               </Typography>
+              {session?.user?.name && (
+                <Typography variant="small" color="gray" className="italic">
+                  {session.user.name}
+                </Typography>
+              )}
             </div>
           </div>
 
+
           {/* Cart Items */}
           {cart.length > 0 ? (
-            <Card className="overflow-hidden shadow-lg" {...materialProps}>
-              <CardBody className="p-0" {...materialProps}>
+            <Card className="overflow-hidden shadow-lg" >
+              <CardBody className="p-0" >
                 <div className="divide-y divide-gray-200">
                   {cart.map((item, index) => (
                     <motion.div
@@ -249,20 +273,20 @@ export default function TableCart() {
                       className="p-4 flex items-center justify-between gap-4"
                     >
                       <div className="flex-1">
-                        <Typography variant="h6" color="blue-gray" className="font-medium" {...materialProps}>
+                        <Typography variant="h6" color="blue-gray" className="font-medium" >
                           {item.name}
                         </Typography>
                         <div className="flex items-center gap-3">
-                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                              Qty: {item.quantity}
-                            </span>
-                            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
-                              ₹{item.price}
-                            </span>
-                          </div>
+                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Qty: {item.quantity}
+                          </span>
+                          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
+                            ₹{item.price}
+                          </span>
+                        </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <Typography variant="h6" color="blue-gray" className="font-bold" {...materialProps}>
+                        <Typography variant="h6" color="blue-gray" className="font-bold" >
                           ₹{item.price * item.quantity}
                         </Typography>
                         <div className="flex items-center gap-2">
@@ -271,11 +295,11 @@ export default function TableCart() {
                             color="blue-gray"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity - 1)}
-                            {...materialProps}
+
                           >
                             <FiMinus className="h-4 w-4" />
                           </IconButton>
-                          <Typography variant="h6" className="w-8 text-center" {...materialProps}>
+                          <Typography variant="h6" className="w-8 text-center" >
                             {item.quantity}
                           </Typography>
                           <IconButton
@@ -283,7 +307,7 @@ export default function TableCart() {
                             color="blue-gray"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity + 1)}
-                            {...materialProps}
+
                           >
                             <FiPlus className="h-4 w-4" />
                           </IconButton>
@@ -292,7 +316,7 @@ export default function TableCart() {
                             color="red"
                             size="sm"
                             onClick={() => removeItem(index)}
-                            {...materialProps}
+
                           >
                             <FiTrash2 className="h-4 w-4" />
                           </IconButton>
@@ -311,17 +335,17 @@ export default function TableCart() {
               <div className="flex justify-center mb-4">
                 <FiShoppingBag className="h-16 w-16 text-blue-gray-300" />
               </div>
-              <Typography variant="h5" color="blue-gray" className="mb-2" {...materialProps}>
+              <Typography variant="h5" color="blue-gray" className="mb-2">
                 Your cart is empty
               </Typography>
-              <Typography color="gray" className="mb-6" {...materialProps}>
+              <Typography color="gray" className="mb-6" >
                 Add some delicious items from the menu
               </Typography>
               <Button
                 color="blue"
                 onClick={() => router.push(`/table/${tableId}`)}
                 className="mt-4"
-                {...materialProps}
+
               >
                 Browse Menu
               </Button>
@@ -334,13 +358,13 @@ export default function TableCart() {
               variants={itemVariants}
               className="mt-8"
             >
-              <Card className="bg-blue-50 border border-blue-100" {...materialProps}>
-                <CardBody {...materialProps}>
+              <Card className="bg-blue-50 border border-blue-100" >
+                <CardBody >
                   <div className="flex justify-between items-center mb-4">
-                    <Typography variant="h6" color="blue-gray" {...materialProps}>
+                    <Typography variant="h6" color="blue-gray" >
                       Order Summary
                     </Typography>
-                    <Typography variant="h4" color="blue-gray" className="font-bold" {...materialProps}>
+                    <Typography variant="h4" color="blue-gray" className="font-bold" >
                       ₹{total}
                     </Typography>
                   </div>
@@ -350,7 +374,7 @@ export default function TableCart() {
                     className="w-full"
                     onClick={handlePlaceOrder}
                     disabled={isLoading}
-                    {...materialProps}
+
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
@@ -364,9 +388,62 @@ export default function TableCart() {
                 </CardBody>
               </Card>
             </motion.div>
-          )}
+          )
+        }
+          <Dialog open={showPhoneDialog} handler={() => setShowPhoneDialog(false)}>
+  <DialogHeader>
+    <FiPhone className="mr-2" /> Enter Your Phone Number
+  </DialogHeader>
+  <DialogBody>
+    <Input
+      {...materialProps}
+      label="Phone Number"
+      value={phoneInput}
+      onChange={(e) => setPhoneInput(e.target.value)}
+      error={!!phoneError}
+    />
+    {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+  </DialogBody>
+  <DialogFooter>
+    <Button
+      color="blue"
+      onClick={async () => {
+        if (!/^\d{10}$/.test(phoneInput)) {
+          setPhoneError("Enter a valid 10-digit number");
+          return;
+        }
+        setSavingPhone(true);
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/users/phone`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: session?.user?.email, phone: phoneInput }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast.success("Phone number saved!");
+            setShowPhoneDialog(false);
+            setPhoneError("");
+            await update({ phone: phoneInput });
+          } else {
+            toast.error(data.message || "Failed to save number");
+          }
+        } catch (err) {
+          toast.error("Server error, try again later");
+        } finally {
+          setSavingPhone(false);
+        }
+      }}
+      disabled={savingPhone}
+    >
+      {savingPhone ? "Saving..." : "Save"}
+    </Button>
+  </DialogFooter>
+</Dialog>
+
         </motion.div>
       </div>
     </div>
+    
   );
 }

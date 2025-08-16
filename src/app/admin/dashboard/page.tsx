@@ -19,10 +19,8 @@ import {
   ListItem,
   ListItemPrefix,
   Avatar,
-  Drawer,
 } from "@material-tailwind/react";
 import {
-  FiMenu as MenuIcon,
   FiUsers,
   FiSettings,
   FiShoppingBag,
@@ -49,7 +47,6 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
-
 
 interface DashboardStats {
   totalOrders: number;
@@ -92,7 +89,9 @@ const containerVariants = {
     }
   }
 };
+
 const socket = io('http://localhost:5000');
+
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
@@ -108,6 +107,7 @@ const defaultStats: DashboardStats = {
   recentOrders: [],
   dailyRevenue: []
 };
+
 interface Order {
   _id: string;
   tableId: string;
@@ -133,10 +133,10 @@ interface PopularItem {
   totalRevenue: number;
   image?: string;
 }
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats>(defaultStats);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Material Tailwind component props for required event handlers
   const materialProps = {
@@ -160,6 +160,7 @@ export default function AdminDashboard() {
       const statsData = await statsRes.json();
       const recentData = await recentOrdersRes.json();
       const popularItemsData = await popularItemsRes.json();
+      
       // ✅ extract the actual array
       const recentOrders = Array.isArray(recentData.orders)
         ? recentData.orders.sort(
@@ -187,8 +188,6 @@ export default function AdminDashboard() {
     }
   };
 
-
-
   useEffect(() => {
     fetchStats();
     const interval = setInterval(fetchStats, 5 * 60 * 1000);
@@ -211,7 +210,6 @@ export default function AdminDashboard() {
     };
   }, []);
 
-
   const handleSignOut = async () => {
     await signOut({ redirect: false });
     router.push('/admin/signin');
@@ -219,190 +217,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white shadow-md border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <IconButton
-                variant="text"
-                className="mr-2 lg:hidden"
-                onClick={() => setIsMobileMenuOpen(true)}
-                placeholder=""
-                color="blue-gray"
-                onResize={() => { }}
-                onResizeCapture={() => { }}
-                onPointerEnterCapture={() => { }}
-                onPointerLeaveCapture={() => { }}
-              >
-                <MenuIcon className="h-6 w-6" />
-              </IconButton>
-              <FiCoffee className="h-8 w-8 text-blue-500" />
-              <h1 className="ml-3 text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent hidden sm:block">
-                Tastoria Cafe Admin
-              </h1>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-4">
-              <IconButton
-                variant="text"
-                className="rounded-full"
-                placeholder=""
-                color="blue-gray"
-                onResize={() => { }}
-                onResizeCapture={() => { }}
-                onPointerEnterCapture={() => { }}
-                onPointerLeaveCapture={() => { }}
-              >
-                <FiBell className="h-5 w-5 text-blue-gray-500" />
-              </IconButton>
-              <Menu>
-                <MenuHandler>
-                  <Button
-                    variant="text"
-                    color="blue-gray"
-                    className="flex items-center gap-2 rounded-full py-0.5 pr-2"
-                    placeholder=""
-                    onResize={() => { }}
-                    onResizeCapture={() => { }}
-                    onPointerEnterCapture={() => { }}
-                    onPointerLeaveCapture={() => { }}
-                  >
-                    <Avatar
-                      size="sm"
-                      variant="circular"
-                      alt="Admin"
-                      className="border border-gray-200 p-0.5"
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
-                      placeholder=""
-                      onResize={() => { }}
-                      onResizeCapture={() => { }}
-                      onPointerEnterCapture={() => { }}
-                      onPointerLeaveCapture={() => { }}
-                    />
-                    <FiChevronDown className="h-4 w-4 hidden sm:block" />
-                  </Button>
-                </MenuHandler>
-                <MenuList
-                  className="p-1"
-                  placeholder=""
-                  onResize={() => { }}
-                  onResizeCapture={() => { }}
-                  onPointerEnterCapture={() => { }}
-                  onPointerLeaveCapture={() => { }}
-                >
-                  <MenuItem
-                    className="flex items-center gap-2"
-                    placeholder=""
-                    onResize={() => { }}
-                    onResizeCapture={() => { }}
-                    onPointerEnterCapture={() => { }}
-                    onPointerLeaveCapture={() => { }}
-                  >
-                    <FiUser className="h-4 w-4" /> Profile
-                  </MenuItem>
-                  <MenuItem
-                    className="flex items-center gap-2"
-                    placeholder=""
-                    onResize={() => { }}
-                    onResizeCapture={() => { }}
-                    onPointerEnterCapture={() => { }}
-                    onPointerLeaveCapture={() => { }}
-                  >
-                    <FiSettings className="h-4 w-4" /> Settings
-                  </MenuItem>
-                  <hr className="my-2" />
-                  <MenuItem
-                    className="flex items-center gap-2 text-red-500"
-                    onClick={handleSignOut}
-                    placeholder=""
-                    onResize={() => { }}
-                    onResizeCapture={() => { }}
-                    onPointerEnterCapture={() => { }}
-                    onPointerLeaveCapture={() => { }}
-                  >
-                    <FiLogOut className="h-4 w-4" /> Sign Out
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Drawer */}
-      <Drawer
-        open={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-        className="p-4"
-        placement="left"
-        overlay={true}
-        placeholder=""
-        onResize={() => { }}
-        onResizeCapture={() => { }}
-        onPointerEnterCapture={() => { }}
-        onPointerLeaveCapture={() => { }}
-      >
-        <div className="flex items-center justify-between mb-6">
-          <Typography
-            variant="h5"
-            color="blue-gray"
-            placeholder=""
-            onResize={() => { }}
-            onResizeCapture={() => { }}
-            onPointerEnterCapture={() => { }}
-            onPointerLeaveCapture={() => { }}
-          >
-            Menu
-          </Typography>
-          <IconButton
-            variant="text"
-            color="blue-gray"
-            onClick={() => setIsMobileMenuOpen(false)}
-            placeholder=""
-            onResize={() => { }}
-            onResizeCapture={() => { }}
-            onPointerEnterCapture={() => { }}
-            onPointerLeaveCapture={() => { }}
-          >
-            <FiX className="h-5 w-5" />
-          </IconButton>
-        </div>
-        <List {...materialProps}>
-          <Link href="/admin/dashboard/menu" onClick={() => setIsMobileMenuOpen(false)}>
-            <ListItem {...materialProps}>
-              <ListItemPrefix {...materialProps}>
-                <MenuIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Menu Management
-            </ListItem>
-          </Link>
-          <Link href="/admin/dashboard/orders" onClick={() => setIsMobileMenuOpen(false)}>
-            <ListItem {...materialProps}>
-              <ListItemPrefix {...materialProps}>
-                <FiCoffee className="h-5 w-5" />
-              </ListItemPrefix>
-              Order Management
-            </ListItem>
-          </Link>
-          <Link href="/admin/dashboard/analytics" onClick={() => setIsMobileMenuOpen(false)}>
-            <ListItem {...materialProps}>
-              <ListItemPrefix {...materialProps}>
-                <FiPieChart className="h-5 w-5" />
-              </ListItemPrefix>
-              Analytics
-            </ListItem>
-          </Link>
-          <Link href="/admin/dashboard/settings" onClick={() => setIsMobileMenuOpen(false)}>
-            <ListItem {...materialProps}>
-              <ListItemPrefix {...materialProps}>
-                <FiSettings className="h-5 w-5" />
-              </ListItemPrefix>
-              Settings
-            </ListItem>
-          </Link>
-        </List>
-      </Drawer>
-
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-4 px-3 sm:py-6 sm:px-6 lg:px-8">
         <motion.div
@@ -511,81 +325,13 @@ export default function AdminDashboard() {
           </motion.div>
 
           {/* Quick Actions */}
-          <motion.div
-            className="mt-4 sm:mt-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
-            variants={itemVariants}
-          >
-            <Link href="/admin/dashboard/menu">
-              <Card className="hover:shadow-lg transition-shadow h-full bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200" {...materialProps}>
-                <CardBody className="flex flex-col items-center text-center p-3 sm:p-4" {...materialProps}>
-                  <div className="p-2 sm:p-3 bg-blue-500 rounded-full mb-2 sm:mb-3 shadow-lg">
-                    <MenuIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <Typography variant="h6" color="blue-gray" className="mb-1 text-sm sm:text-base font-bold" {...materialProps}>
-                    Menu
-                  </Typography>
-                  <Typography variant="small" color="gray" className="text-xs sm:text-sm" {...materialProps}>
-                    Manage Items
-                  </Typography>
-                </CardBody>
-              </Card>
-            </Link>
-
-            <Link href="/admin/dashboard/orders">
-              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-green-100 border border-green-200" {...materialProps}>
-                <CardBody className="flex flex-col items-center text-center p-3 sm:p-4" {...materialProps}>
-                  <div className="p-2 sm:p-3 bg-green-500 rounded-full mb-2 sm:mb-3 shadow-lg">
-                    <FiCoffee className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <Typography variant="h6" color="blue-gray" className="mb-1 text-sm sm:text-base font-bold" {...materialProps}>
-                    Order Management
-                  </Typography>
-                  <Typography variant="small" color="gray" className="text-xs sm:text-sm" {...materialProps}>
-                    Monitor and manage table orders
-                  </Typography>
-                </CardBody>
-              </Card>
-            </Link>
-
-            <Link href="/admin/dashboard/analytics">
-              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200" {...materialProps}>
-                <CardBody className="flex flex-col items-center text-center p-3 sm:p-4" {...materialProps}>
-                  <div className="p-2 sm:p-3 bg-purple-500 rounded-full mb-2 sm:mb-3 shadow-lg">
-                    <FiPieChart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <Typography variant="h6" color="blue-gray" className="mb-1 text-sm sm:text-base font-bold" {...materialProps}>
-                    Analytics
-                  </Typography>
-                  <Typography variant="small" color="gray" className="text-xs sm:text-sm" {...materialProps}>
-                    View detailed business insights
-                  </Typography>
-                </CardBody>
-              </Card>
-            </Link>
-
-            <Link href="/admin/dashboard/settings">
-              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200" {...materialProps}>
-                <CardBody className="flex flex-col items-center text-center p-3 sm:p-4" {...materialProps}>
-                  <div className="p-2 sm:p-3 bg-amber-500 rounded-full mb-2 sm:mb-3 shadow-lg">
-                    <FiSettings className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <Typography variant="h6" color="blue-gray" className="mb-1 text-sm sm:text-base font-bold" {...materialProps}>
-                    Settings
-                  </Typography>
-                  <Typography variant="small" color="gray" className="text-xs sm:text-sm" {...materialProps}>
-                    Configure system preferences
-                  </Typography>
-                </CardBody>
-              </Card>
-            </Link>
-          </motion.div>
+      
 
           {/* Management Section */}
           <motion.div
             className="mt-4 sm:mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3"
             variants={itemVariants}
           >
-
             {/* Recent Orders */}
             <Card className="lg:col-span-2 overflow-hidden bg-white shadow-xl border border-gray-100" {...materialProps}>
               <CardBody className="p-3 sm:p-4" {...materialProps}>
@@ -680,6 +426,7 @@ export default function AdminDashboard() {
                 </div>
               </CardBody>
             </Card>
+
             {/* Popular Items */}
             <Card className="bg-white shadow-xl border border-gray-100" {...materialProps}>
               <CardBody className="p-4" {...materialProps}>
@@ -690,7 +437,7 @@ export default function AdminDashboard() {
                   {stats.popularItems?.map((item, index) => (
                     <ListItem key={index} className="flex items-center gap-4 mb-2 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-100" {...materialProps}>
                       {/* Show the image */}
-                      <Avatar src={item.image} alt={item.name} size="sm"  {...materialProps} />
+                      <Avatar src={item.image} alt={item.name} size="sm" {...materialProps} />
                       {/* Info */}
                       <div className="flex-1">
                         <Typography variant="small" color="blue-gray" className="font-bold" {...materialProps}>

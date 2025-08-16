@@ -7,7 +7,8 @@ import About from "../../about";
 import Contact from "../../contact";
 import Faq from "../../faq";
 
-const VALID_TABLES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const VALID_TABLES = Array.from({ length: 30 }, (_, i) => String(i + 1));
+
 
 export default function TableLayout({ children }: { children: React.ReactNode }) {
   const params = useParams();

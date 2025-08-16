@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Tastoria Cafe - Where Every Sip Tells a Story",
   description:
     "Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality at Tastoria Cafe. Your cozy destination for quality coffee and memorable moments.",
+  icons: {
+    icon: "/Favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -31,7 +34,7 @@ export default function RootLayout({
           data-site="YOUR_DOMAIN_HERE"
           src="https://api.nepcha.com/js/nepcha-analytics.js"
         ></script>
-        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+        {/* Favicon is provided via metadata.icons and app/Favicon.ico */}
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"

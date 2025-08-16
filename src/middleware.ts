@@ -1,9 +1,7 @@
-import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request });
   const isAdminPath = request.nextUrl.pathname.startsWith('/admin');
   const isAuthPath = request.nextUrl.pathname === '/admin/signin';
   const isQRScan = request.nextUrl.searchParams.has('qr');
@@ -13,16 +11,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/order-options', request.url));
   }
 
-  // Redirect to sign in if accessing admin routes without auth
-  if (isAdminPath && !isAuthPath && !token) {
-    return NextResponse.redirect(new URL('/admin/signin', request.url));
-  }
-
-  // Redirect to dashboard if already authenticated and trying to access sign in
-  if (isAuthPath && token) {
-    return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-  }
-
+  // For admin routes, we'll let the client-side handle authentication
+  // since we can't access localStorage in middleware
+  // The client-side will redirect if no token is found
+  
   return NextResponse.next();
 }
 

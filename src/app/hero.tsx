@@ -31,7 +31,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
   const handleMenuClick = () => {
     if (!session) {
       toast.error('Please sign in to view the menu', {
-        duration: 3000,
+        duration: 2000,
         position: 'top-center',
         style: {
           background: '#f44336',
@@ -84,7 +84,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {/*<Typography variant="h3" color="white" className="mb-2" {...materialProps}>
+            {/*<Typography variant="h3" color="white" className="mb-2" >
               Open Daily 7AM - 10PM @ Parbhani
             </Typography>*/}
           </motion.div>
@@ -94,7 +94,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <Typography variant="h1" color="white" className="lg:max-w-3xl" {...materialProps}>
+            <Typography variant="h1" color="white" className="lg:max-w-3xl">
               Tastoria Cafe: Where Every Sip Tells a Story
             </Typography>
           </motion.div>
@@ -105,11 +105,11 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
           >
-            <Typography variant="lead" color="white" {...materialProps}>
+            <Typography variant="lead" color="white" >
               Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality in our cozy Tastoria Cafe.
             </Typography>
             {tableId && (
-              <Typography variant="lead" color="white" className="mt-4" {...materialProps}>
+              <Typography variant="lead" color="white" className="mt-4" >
                 <span className="font-bold">Table {tableId}</span>
               </Typography>
             )}
@@ -129,7 +129,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
                 variant="gradient"
                 color="white"
                 onClick={handleMenuClick}
-                {...materialProps}
+                
               >
                 View Menu
               </Button>

@@ -1,32 +1,82 @@
 "use client";
+import React, { useRef } from "react";
 import { Typography, Card, CardBody } from "@material-tailwind/react";
 import { MapPinIcon, PhoneIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { FaInstagram, FaFacebook } from "react-icons/fa";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 
-const contactData = [
+// Main contact details
+const contactInfoData = [
   {
     icon: MapPinIcon,
     title: "Our Address",
     value: "Parbhani 431401",
+    link: "https://www.google.com/maps?q=Parbhani+431401",
   },
   {
     icon: PhoneIcon,
     title: "Phone Number",
     value: "+91 8055221419",
+    link: "tel:+918055221419",
   },
   {
     icon: ClockIcon,
     title: "Opening Hours",
     value: "Mon - Sun: 7:00 AM - 10:00 PM",
+    link: "#", // Link can be adjusted as needed
   },
 ];
 
-export function Contact() {
-  // Create refs for each card
-  const refs = [useRef(null), useRef(null), useRef(null)];
-  const inViews = refs.map((ref) => useInView(ref, { once: true, margin: "-100px" }));
+// Social media links
+const socialMediaData = [
+  {
+    icon: FaInstagram,
+    title: "Instagram",
+    value: "@yourusername",
+    link: "https://instagram.com/yourusername",
+  },
+  {
+    icon: FaFacebook,
+    title: "Facebook",
+    value: "Our Facebook Page",
+    link: "https://facebook.com/yourusername",
+  },
+];
 
+// A reusable component for the contact cards to reduce repetition
+const ContactCard = ({ icon: Icon, title, value, link, inView, delay }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay: delay, type: "spring", stiffness: 80 }}
+      whileHover={{ scale: 1.03 }}
+      className="block"
+    >
+      <Card shadow={false} color="transparent" className="cursor-pointer">
+        <CardBody className="text-center">
+          <Icon className="h-10 w-10 mx-auto text-blue-gray-700 mb-4" />
+          <Typography variant="h5" color="blue-gray" className="mb-2">
+            {title}
+          </Typography>
+          <Typography className="!text-gray-600">
+            {value}
+          </Typography>
+        </CardBody>
+      </Card>
+    </motion.a>
+  );
+};
+
+
+export function Contact() {
   return (
     <section id="contact" className="py-20 px-8">
       <div className="container mx-auto text-center">
@@ -36,28 +86,18 @@ export function Contact() {
         <Typography variant="lead" className="mx-auto lg:w-3/5 !text-gray-500 mb-12">
           We'd love to hear from you! Visit us, give us a call, or drop us a line. We're here to make your day a little more delicious.
         </Typography>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {contactData.map(({ icon: Icon, title, value }, idx) => (
-            <motion.div
-              key={title}
-              ref={refs[idx]}
-              initial={{ opacity: 0, y: 40 }}
-              animate={inViews[idx] ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: idx * 0.15, type: "spring", stiffness: 80 }}
-              whileHover={{ scale: 1.03 }}
-            >
-              <Card shadow={false} color="transparent">
-                <CardBody className="text-center">
-                  <Icon className="h-10 w-10 mx-auto text-blue-gray-700 mb-4" />
-                  <Typography variant="h5" color="blue-gray" className="mb-2">
-                    {title}
-                  </Typography>
-                  <Typography className="!text-gray-600">
-                    {value}
-                  </Typography>
-                </CardBody>
-              </Card>
-            </motion.div>
+
+        {/* Grid for Top Row: Address, Phone, Hours */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+          {contactInfoData.map((props, idx) => (
+            <ContactCard key={props.title} {...props} delay={idx * 0.15} />
+          ))}
+        </div>
+
+        {/* Grid for Bottom Row: Social Media */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 lg:w-2/3 mx-auto">
+           {socialMediaData.map((props, idx) => (
+            <ContactCard key={props.title} {...props} delay={idx * 0.15} />
           ))}
         </div>
       </div>
@@ -65,4 +105,4 @@ export function Contact() {
   );
 }
 
-export default Contact; 
+export default Contact;
