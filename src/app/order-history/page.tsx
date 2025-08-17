@@ -33,22 +33,8 @@ export default function OrderHistory() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // Material Tailwind component props
-  const materialProps = {
-    placeholder: "",
-    onResize: undefined,
-    onResizeCapture: undefined,
-    onPointerEnterCapture: undefined,
-    onPointerLeaveCapture: undefined,
-    onAnimationStart: undefined,
-    onDragStart: undefined,
-    onDragEnd: undefined,
-    onDrag: undefined
-  };
   const totalOrdersCount = orders.length;
-
   const completedOrdersCount = orders.filter(o => o.status === "completed").length;
-
   const totalSpent = orders
     .filter(o => o.status === "completed")
     .reduce((sum, o) => sum + o.total, 0);
@@ -77,7 +63,17 @@ export default function OrderHistory() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="flex flex-col items-center space-y-4">
           <Loading />
-          <Typography variant="h6" color="blue-gray" className="animate-pulse">
+          {/* ✅ Added props to fix build error */}
+          <Typography
+            variant="h6"
+            color="blue-gray"
+            className="animate-pulse"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+          >
             Loading your orders...
           </Typography>
         </div>
@@ -96,10 +92,28 @@ export default function OrderHistory() {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mb-6 shadow-lg">
                 <FiPackage className="h-10 w-10 text-white" />
               </div>
-              <Typography variant="h2" color="blue-gray" className="mb-4 font-bold" >
+              <Typography
+                variant="h2"
+                color="blue-gray"
+                className="mb-4 font-bold"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
                 Your Order History
               </Typography>
-              <Typography variant="lead" color="gray" className="max-w-2xl mx-auto">
+              <Typography
+                variant="lead"
+                color="gray"
+                className="max-w-2xl mx-auto"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
                 Track all your past orders and relive your delicious dining experiences
               </Typography>
             </div>
@@ -107,41 +121,75 @@ export default function OrderHistory() {
             {/* Stats Section */}
             {orders.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <CardBody className="text-center" >
+                <Card
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
+                  <CardBody
+                    className="text-center"
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                  >
                     <FiTrendingUp className="h-8 w-8 mx-auto mb-3" />
-                    <Typography variant="h4" className="font-bold" >
-                    {totalOrdersCount}
+                    <Typography
+                      variant="h4"
+                      className="font-bold"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
+                      {totalOrdersCount}
                     </Typography>
-                    <Typography variant="small" >
+                    <Typography
+                      variant="small"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       Total Orders
                     </Typography>
                   </CardBody>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300" >
-                  <CardBody className="text-center" >
+                <Card
+                  className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
+                  <CardBody
+                    className="text-center"
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                  >
                     <FiCheckCircle className="h-8 w-8 mx-auto mb-3" />
-                    <Typography variant="h4" className="font-bold" >
-                    {completedOrdersCount}
+                    <Typography
+                      variant="h4"
+                      className="font-bold"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
+                      {completedOrdersCount}
                     </Typography>
-                    <Typography variant="small" >
+                    <Typography
+                      variant="small"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       Completed Orders
                     </Typography>
                   </CardBody>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300" >
-                  <CardBody className="text-center">
+                <Card
+                  className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
+                  <CardBody
+                    className="text-center"
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                  >
                     <FiShoppingBag className="h-8 w-8 mx-auto mb-3" />
-                    {/*<Typography variant="h4" className="font-bold" >
-                      ₹{orders.reduce((sum, order) => sum + order.total, 0)}
-                    </Typography>*/}
-                    
-                    <Typography variant="h4" >
-                    ₹{totalSpent}
+                    <Typography
+                      variant="h4"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
+                      ₹{totalSpent}
                     </Typography>
-                    <Typography variant="small" >
+                    <Typography
+                      variant="small"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       Total Amount Spent
                     </Typography>
                   </CardBody>
@@ -150,8 +198,14 @@ export default function OrderHistory() {
             )}
 
             {orders.length === 0 ? (
-              <Card className="max-w-md mx-auto shadow-xl border-0 bg-gradient-to-br from-white to-gray-50" >
-                <CardBody className="text-center py-16">
+              <Card
+                className="max-w-md mx-auto shadow-xl border-0 bg-gradient-to-br from-white to-gray-50"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
+                <CardBody
+                  className="text-center py-16"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   <div className="relative mb-6">
                     <div className="w-24 h-24 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto">
                       <FiShoppingBag className="h-12 w-12 text-gray-400" />
@@ -160,10 +214,18 @@ export default function OrderHistory() {
                       <span className="text-white text-sm font-bold">0</span>
                     </div>
                   </div>
-                  <Typography variant="h5" color="blue-gray" className="mb-3 font-bold" >
+                  <Typography
+                    variant="h5"
+                    color="blue-gray"
+                    className="mb-3 font-bold"
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                  >
                     No Orders Yet
                   </Typography>
-                  <Typography className="text-gray-600 mb-6 leading-relaxed" >
+                  <Typography
+                    className="text-gray-600 mb-6 leading-relaxed"
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                  >
                     Start your culinary journey by exploring our delicious menu and placing your first order.
                   </Typography>
                   <Button
@@ -171,7 +233,7 @@ export default function OrderHistory() {
                     size="lg"
                     className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg transform hover:scale-105 transition-all duration-300"
                     onClick={() => router.push('/menu-page')}
-                   
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   >
                     Explore Menu
                   </Button>
@@ -187,9 +249,12 @@ export default function OrderHistory() {
                       animationDelay: `${index * 100}ms`,
                       animation: 'fadeInUp 0.6s ease-out forwards'
                     }}
-                  
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   >
-                    <CardBody className="p-8" >
+                    <CardBody
+                      className="p-8"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       <div className="flex justify-between items-start mb-8">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-3">
@@ -197,13 +262,22 @@ export default function OrderHistory() {
                               <span className="text-white font-bold text-lg">#{order.orderId ? order.orderId.slice(-4) : '----'}</span>
                             </div>
                             <div>
-                              <Typography variant="h5" color="blue-gray" className="font-bold" >
+                              <Typography
+                                variant="h5"
+                                color="blue-gray"
+                                className="font-bold"
+                                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                              >
                                 Order #{order.orderId}
                               </Typography>
                               <div className="flex items-center gap-4 mt-2">
                                 <div className="flex items-center gap-2 text-gray-600">
                                   <FiClock className="h-4 w-4" />
-                                  <Typography variant="small" className="font-medium" >
+                                  <Typography
+                                    variant="small"
+                                    className="font-medium"
+                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                                  >
                                     {new Date(order.orderTime).toLocaleDateString('en-US', {
                                       year: 'numeric',
                                       month: 'long',
@@ -215,7 +289,11 @@ export default function OrderHistory() {
                                 </div>
                                 <div className="flex items-center gap-2 text-gray-600">
                                   <FiPhone className="h-4 w-4" />
-                                  <Typography variant="small" className="font-medium" >
+                                  <Typography
+                                    variant="small"
+                                    className="font-medium"
+                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                                  >
                                     {order.phoneNumber}
                                   </Typography>
                                 </div>
@@ -224,7 +302,7 @@ export default function OrderHistory() {
                           </div>
                         </div>
                         <Chip
-                          value={order.status.charAt(0).toUpperCase() + order.status.slice(1)} // Capitalize first letter
+                          value={order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                           color={
                             order.status === "pending" ? "orange" :
                               order.status === "confirmed" ? "blue" :
@@ -241,11 +319,14 @@ export default function OrderHistory() {
                                     null
                           }
                         />
-
                       </div>
-
                       <div className="bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 mb-6 border border-gray-100">
-                        <Typography variant="h6" color="blue-gray" className="mb-4 font-bold" >
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="mb-4 font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           Order Items
                         </Typography>
                         <div className="space-y-3">
@@ -256,12 +337,20 @@ export default function OrderHistory() {
                                   <span className="text-blue-600 font-bold text-sm">{item.quantity}</span>
                                 </div>
                                 <div>
-                                  <Typography color="blue-gray" className="font-semibold" >
+                                  <Typography
+                                    color="blue-gray"
+                                    className="font-semibold"
+                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                                  >
                                     {item.name}
                                   </Typography>
                                 </div>
                               </div>
-                              <Typography color="blue-gray" className="font-bold" >
+                              <Typography
+                                color="blue-gray"
+                                className="font-bold"
+                                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                              >
                                 ₹{item.price}
                               </Typography>
                             </div>
@@ -270,10 +359,20 @@ export default function OrderHistory() {
                       </div>
 
                       <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-                        <Typography variant="h6" color="blue-gray" className="font-bold">
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           Total Amount
                         </Typography>
-                        <Typography variant="h5" color="blue" className="font-bold" >
+                        <Typography
+                          variant="h5"
+                          color="blue"
+                          className="font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           ₹{order.total}
                         </Typography>
                       </div>
@@ -300,4 +399,4 @@ export default function OrderHistory() {
       `}</style>
     </>
   );
-} 
+}

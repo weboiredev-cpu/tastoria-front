@@ -92,7 +92,6 @@ export default function CartPage() {
       return;
     }
 
-    // Save phone number with order details
     localStorage.setItem('userPhone', phoneNumber);
     setShowPhoneDialog(false);
     router.push('/order-confirmation');
@@ -104,26 +103,58 @@ export default function CartPage() {
       <div className="container mx-auto px-4 py-32">
         <div className="flex items-center gap-4 mb-8">
           <Link href="/menu-page">
+            {/* ✅ Added props to fix build error */}
             <Button
               variant="text"
               className="flex items-center gap-2"
               color="blue-gray"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
             >
               <FiArrowLeft className="h-4 w-4" /> Back to Menu
             </Button>
           </Link>
-          <Typography variant="h2" color="blue-gray">
+          {/* ✅ Added props to fix build error */}
+          <Typography
+            variant="h2"
+            color="blue-gray"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+          >
             Your Cart
           </Typography>
         </div>
 
         {cart.length === 0 ? (
           <div className="text-center py-16">
-            <Typography variant="h4" color="blue-gray" className="mb-4">
+            <Typography
+              variant="h4"
+              color="blue-gray"
+              className="mb-4"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               Your cart is empty
             </Typography>
             <Link href="/menu-page">
-              <Button color="blue" size="lg">
+              <Button
+                color="blue"
+                size="lg"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
                 Browse Menu
               </Button>
             </Link>
@@ -132,8 +163,23 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               {cart.map((item, index) => (
-                <Card key={index} className="mb-4 overflow-hidden">
-                  <CardBody className="flex gap-4">
+                <Card
+                  key={index}
+                  className="mb-4 overflow-hidden"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
+                  <CardBody
+                    className="flex gap-4"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
+                  >
                     <div className="w-24 h-24 relative rounded-xl overflow-hidden">
                       <Image
                         src={item.img}
@@ -145,14 +191,39 @@ export default function CartPage() {
                     <div className="flex-grow">
                       <div className="flex justify-between items-start">
                         <div>
-                          <Typography variant="h6" color="blue-gray">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
+                          >
                             {item.name}
                           </Typography>
-                          <Typography variant="small" color="gray" className="font-normal">
+                          <Typography
+                            variant="small"
+                            color="gray"
+                            className="font-normal"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
+                          >
                             {item.description}
                           </Typography>
                         </div>
-                        <Typography variant="h6" color="blue-gray">
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           ₹{item.price}
                         </Typography>
                       </div>
@@ -162,16 +233,33 @@ export default function CartPage() {
                             variant="text"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity - 1)}
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
                           >
                             <FiMinus className="h-4 w-4" />
                           </IconButton>
-                          <Typography className="w-12 text-center">
+                          <Typography
+                            className="w-12 text-center"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
+                          >
                             {item.quantity}
                           </Typography>
                           <IconButton
                             variant="text"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity + 1)}
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
                           >
                             <FiPlus className="h-4 w-4" />
                           </IconButton>
@@ -180,6 +268,11 @@ export default function CartPage() {
                           variant="text"
                           color="red"
                           onClick={() => removeItem(index)}
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
                         >
                           <FiTrash2 className="h-4 w-4" />
                         </IconButton>
@@ -191,24 +284,101 @@ export default function CartPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <Card className="sticky top-24">
-                <CardBody>
-                  <Typography variant="h5" color="blue-gray" className="mb-4">
+              <Card
+                className="sticky top-24"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
+                <CardBody
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
+                  <Typography
+                    variant="h5"
+                    color="blue-gray"
+                    className="mb-4"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
+                  >
                     Order Summary
                   </Typography>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <Typography color="gray">Subtotal</Typography>
-                      <Typography color="blue-gray">₹{cartTotal}</Typography>
+                      <Typography
+                        color="gray"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        Subtotal
+                      </Typography>
+                      <Typography
+                        color="blue-gray"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        ₹{cartTotal}
+                      </Typography>
                     </div>
                     <div className="flex justify-between">
-                      <Typography color="gray">Delivery Fee</Typography>
-                      <Typography color="blue-gray">₹0</Typography>
+                      <Typography
+                        color="gray"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        Delivery Fee
+                      </Typography>
+                      <Typography
+                        color="blue-gray"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        ₹0
+                      </Typography>
                     </div>
                     <div className="border-t border-blue-gray-50 my-4"></div>
                     <div className="flex justify-between">
-                      <Typography variant="h6">Total</Typography>
-                      <Typography variant="h6" color="blue">₹{cartTotal}</Typography>
+                      <Typography
+                        variant="h6"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        Total
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        color="blue"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        ₹{cartTotal}
+                      </Typography>
                     </div>
                   </div>
                   <Button
@@ -217,6 +387,11 @@ export default function CartPage() {
                     fullWidth
                     className="mt-6"
                     onClick={handleCheckout}
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
                   >
                     Proceed to Checkout
                   </Button>
@@ -227,12 +402,41 @@ export default function CartPage() {
         )}
       </div>
 
-      {/* Phone Number Dialog */}
-      <Dialog open={showPhoneDialog} handler={() => setShowPhoneDialog(false)}>
-        <DialogHeader>Enter Your Phone Number</DialogHeader>
-        <DialogBody>
+      <Dialog
+        open={showPhoneDialog}
+        handler={() => setShowPhoneDialog(false)}
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
+      >
+        <DialogHeader
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
+          Enter Your Phone Number
+        </DialogHeader>
+        <DialogBody
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           <div className="space-y-4">
-            <Typography color="gray" className="text-sm">
+            <Typography
+              color="gray"
+              className="text-sm"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               Please enter your phone number for order confirmation
             </Typography>
             <div className="relative">
@@ -246,31 +450,61 @@ export default function CartPage() {
                 }}
                 error={!!phoneError}
                 icon={<FiPhone />}
+                crossOrigin={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               />
               {phoneError && (
-                <Typography color="red" className="text-xs mt-1">
+                <Typography
+                  color="red"
+                  className="text-xs mt-1"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
                   {phoneError}
                 </Typography>
               )}
             </div>
           </div>
         </DialogBody>
-        <DialogFooter>
+        <DialogFooter
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           <Button
             variant="text"
             color="red"
             onClick={() => setShowPhoneDialog(false)}
             className="mr-1"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             Cancel
           </Button>
-          <Button color="blue" onClick={handlePhoneSubmit}>
+          <Button
+            color="blue"
+            onClick={handlePhoneSubmit}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+          >
             Confirm Order
           </Button>
         </DialogFooter>
       </Dialog>
-
-      
     </>
   );
-} 
+}

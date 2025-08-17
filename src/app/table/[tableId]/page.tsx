@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from "@/components"; // Footer import is not needed and has been removed
+import { Navbar } from "@/components";
 import { MenuItemCard } from "@/components/menu-item-card";
 import {
   Typography,
@@ -18,7 +18,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { io } from "socket.io-client";
 import Loading from "@/components/Loading";
 import { FiSearch } from "react-icons/fi";
-import { FaShoppingCart } from "react-icons/fa"; // Added for cart icon
+import { FaShoppingCart } from "react-icons/fa";
 
 const VALID_TABLES = Array.from({ length: 30 }, (_, i) => String(i + 1));
 const STORAGE_KEY_PREFIX = 'table_';
@@ -226,12 +226,10 @@ export default function TableMenu() {
     [cart]
   );
   
-  // Added: Memoized calculation for total items in cart
   const totalItemsInCart = useMemo(() =>
     cart.reduce((sum, item) => sum + item.quantity, 0),
     [cart]
   );
-
 
   if (!isValidTable) {
     return (
@@ -246,7 +244,6 @@ export default function TableMenu() {
       <Navbar />
       <Toaster />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
-        {/* Added pb-32 to create space for the fixed cart bar */}
         <div className="pt-24 pb-32 px-4 md:px-8">
           <div className="container mx-auto">
             {/* Table Info */}
@@ -255,19 +252,35 @@ export default function TableMenu() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="mb-8 bg-white shadow-lg border border-blue-50">
-                <CardBody>
+              {/* ✅ Added props to fix build error */}
+              <Card
+                className="mb-8 bg-white shadow-lg border border-blue-50"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
+                <CardBody
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-center md:text-left">
                       <div className="flex items-center gap-3 mb-2">
                         <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                           <span className="text-white font-bold">{tableId}</span>
                         </div>
-                        <Typography variant="h3" color="blue-gray" className="font-bold">
+                        <Typography
+                          variant="h3"
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           Table {tableId}
                         </Typography>
                       </div>
-                      <Typography variant="lead" color="gray" className="font-normal">
+                      <Typography
+                        variant="lead"
+                        color="gray"
+                        className="font-normal"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
                         Welcome! Ready to order?
                       </Typography>
                     </div>
@@ -276,6 +289,7 @@ export default function TableMenu() {
                       size="lg"
                       onClick={() => router.push(`/table/${tableId}/cart`)}
                       className="flex items-center gap-3 px-6"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                     >
                       <span>View Cart</span>
                       <div className="flex items-center gap-2 bg-white text-blue-500 px-3 py-1 rounded-full">
@@ -289,11 +303,11 @@ export default function TableMenu() {
             </motion.div>
 
             {/* Search and Filter Section */}
-            <motion.div 
-                className="mb-8 p-4 rounded-xl shadow-lg bg-white/90 border border-gray-200"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+            <motion.div
+              className="mb-8 p-4 rounded-xl shadow-lg bg-white/90 border border-gray-200"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
               <div className="flex flex-col md:flex-row gap-4 items-center">
                 <div className="w-full md:w-1/2 lg:w-1/2">
@@ -303,6 +317,7 @@ export default function TableMenu() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     crossOrigin={undefined}
+                    onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   />
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/2">
@@ -310,6 +325,7 @@ export default function TableMenu() {
                     label="Filter by category"
                     value={selectedCategory}
                     onChange={handleCategoryChange}
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   >
                     <Option value="all">All Categories</Option>
                     {Object.keys(menuData).map((category) => (
@@ -326,7 +342,13 @@ export default function TableMenu() {
             {isLoading ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-24">
                 <Loading />
-                <Typography variant="h6" color="gray">Loading menu...</Typography>
+                <Typography
+                  variant="h6"
+                  color="gray"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
+                  Loading menu...
+                </Typography>
               </motion.div>
             ) : (
               <AnimatePresence mode="wait">
@@ -344,7 +366,12 @@ export default function TableMenu() {
                       animate={{ opacity: 1, y: 0 }}
                       className="mb-12"
                     >
-                      <Typography variant="h4" color="blue-gray" className="font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize flex items-center">
+                      <Typography
+                        variant="h4"
+                        color="blue-gray"
+                        className="font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize flex items-center"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
                         {category.replace(/_/g, " ")}
                         <span className="ml-3 text-sm text-gray-500 font-normal">
                           ({items.length} items)
@@ -372,11 +399,22 @@ export default function TableMenu() {
                       </div>
                     </motion.div>
                   ))}
-
                   {filteredMenu.every(([_, items]) => items.length === 0) && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
-                      <Typography variant="h6" color="gray">No menu items found</Typography>
-                      <Typography color="gray" className="mt-2">Try adjusting your search or filters</Typography>
+                      <Typography
+                        variant="h6"
+                        color="gray"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
+                        No menu items found
+                      </Typography>
+                      <Typography
+                        color="gray"
+                        className="mt-2"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
+                        Try adjusting your search or filters
+                      </Typography>
                     </motion.div>
                   )}
                 </motion.div>
@@ -386,7 +424,7 @@ export default function TableMenu() {
         </div>
       </div>
 
-      {/* START: ADDED FLOATING CART BAR */}
+      {/* Floating Cart Bar */}
       <AnimatePresence>
         {cart.length > 0 && (
           <motion.div
@@ -398,19 +436,31 @@ export default function TableMenu() {
           >
             <Card
               className="w-full rounded-none border-t border-gray-200 bg-white shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)]"
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
             >
               <div className="container mx-auto px-4">
-                <CardBody className="p-3 md:p-4">
+                <CardBody
+                  className="p-3 md:p-4"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   <div className="flex justify-between items-center gap-4">
                     <div className="flex items-center gap-3">
                       <div className="bg-blue-500 text-white rounded-md h-8 w-8 flex items-center justify-center text-sm font-bold">
                         {totalItemsInCart}
                       </div>
                       <div>
-                        <Typography color="blue-gray" className="font-bold">
+                        <Typography
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           ₹{cartTotal.toFixed(2)}
                         </Typography>
-                        <Typography variant="small" color="gray">
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           {totalItemsInCart} item{totalItemsInCart > 1 ? 's' : ''} in cart
                         </Typography>
                       </div>
@@ -419,6 +469,7 @@ export default function TableMenu() {
                       color="blue"
                       onClick={() => router.push(`/table/${tableId}/cart`)}
                       className="flex-shrink-0 flex items-center gap-2"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                     >
                       <span>View Cart</span>
                       <FaShoppingCart />
@@ -430,7 +481,6 @@ export default function TableMenu() {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* END: ADDED FLOATING CART BAR */}
     </>
   );
 }

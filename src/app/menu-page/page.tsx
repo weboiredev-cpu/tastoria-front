@@ -36,7 +36,6 @@ export default function MenuPage() {
   const [isLoading, setIsLoading] = useState(true);
   const CLOUDINARY_BASE_URL = process.env.NEXT_PUBLIC_CLOUDINARY_BASE_URL || '';
 
-  // Load cart from localStorage on initial render
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -44,7 +43,6 @@ export default function MenuPage() {
     }
   }, []);
 
-  // Fetch menu data from API
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -74,7 +72,6 @@ export default function MenuPage() {
     fetchMenu();
   }, []);
 
-  // Socket listener for real-time menu status updates
   useEffect(() => {
     const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
@@ -98,14 +95,12 @@ export default function MenuPage() {
     };
   }, []);
 
-  // Update cart in localStorage and recalculate total
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     setCartTotal(total);
   }, [cart]);
 
-  // Handler for category dropdown change
   const handleCategoryChange = (category: string | undefined) => {
     setSelectedCategory(category || 'all');
   };
@@ -120,7 +115,8 @@ export default function MenuPage() {
 
       if (existingItemIndex > -1) {
         const updatedCart = [...prevCart];
-        updatedCart[existingItem-index].quantity += quantity;
+        // ✅ Fixed the typo here
+        updatedCart[existingItemIndex].quantity += quantity;
         return updatedCart;
       } else {
         return [...prevCart, { ...item, price: itemPrice, quantity }];
@@ -128,14 +124,12 @@ export default function MenuPage() {
     });
   };
 
-  // Function to get proper image URL
   const getImageUrl = (item: any) => {
     if (item.imageUrl) return item.imageUrl;
     if (item.image) return `${CLOUDINARY_BASE_URL}${item.image}`;
     return "https://images.unsplash.com/photo-1504674900240-9c69d0c2e5b7?w=500&h=300&fit=crop&crop=center";
   };
 
-  // Filter data based on selected category and search query
   const filteredMenu = Object.entries(menuData)
     .map(([category, items]) => {
       if (selectedCategory !== 'all' && category !== selectedCategory) {
@@ -148,7 +142,6 @@ export default function MenuPage() {
     })
     .filter((entry): entry is [string, any[]] => entry !== null && entry[1].length > 0);
 
-  // Animation variants for Framer Motion
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
@@ -173,14 +166,29 @@ export default function MenuPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="mb-8 bg-white shadow-lg border border-blue-50">
-                <CardBody>
+              <Card
+                className="mb-8 bg-white shadow-lg border border-blue-50"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
+                <CardBody
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-center md:text-left">
-                      <Typography variant="h3" color="blue-gray" className="font-bold">
+                      <Typography
+                        variant="h3"
+                        color="blue-gray"
+                        className="font-bold"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
                         Our Delicious Menu
                       </Typography>
-                      <Typography variant="lead" color="gray" className="font-normal">
+                      <Typography
+                        variant="lead"
+                        color="gray"
+                        className="font-normal"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
                         Explore our wide variety of mouth-watering dishes, prepared with the finest ingredients and love.
                       </Typography>
                     </div>
@@ -189,6 +197,7 @@ export default function MenuPage() {
                       size="lg"
                       onClick={() => router.push(`/cart`)}
                       className="flex items-center gap-3 px-6"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                     >
                       <span>View Cart</span>
                       <div className="flex items-center gap-2 bg-white text-blue-500 px-3 py-1 rounded-full">
@@ -201,7 +210,7 @@ export default function MenuPage() {
               </Card>
             </motion.div>
 
-            {/* Search and Filter Section - MODIFIED */}
+            {/* Search and Filter Section */}
             <motion.div
               className="mb-8 p-4 rounded-xl shadow-lg bg-white/90 border border-gray-200"
               initial={{ opacity: 0, y: 20 }}
@@ -216,6 +225,7 @@ export default function MenuPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     crossOrigin={undefined}
+                    onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   />
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/2">
@@ -223,6 +233,7 @@ export default function MenuPage() {
                     label="Filter by category"
                     value={selectedCategory}
                     onChange={handleCategoryChange}
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   >
                     <Option value="all">All Categories</Option>
                     {Object.keys(menuData).map((category) => (
@@ -252,7 +263,12 @@ export default function MenuPage() {
                     key={section}
                     variants={itemVariants}
                   >
-                    <Typography variant="h2" color="blue-gray" className="text-3xl font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize">
+                    <Typography
+                      variant="h2"
+                      color="blue-gray"
+                      className="text-3xl font-bold mb-8 pb-4 border-b-2 border-gray-200 capitalize"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       {section.replace(/_/g, " ")}
                     </Typography>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -277,10 +293,18 @@ export default function MenuPage() {
                 ))}
                 {filteredMenu.length === 0 && !isLoading && (
                   <div className="text-center py-16">
-                    <Typography variant="h4" color="blue-gray" className="mb-2">
+                    <Typography
+                      variant="h4"
+                      color="blue-gray"
+                      className="mb-2"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       No dishes found
                     </Typography>
-                    <Typography color="gray">
+                    <Typography
+                      color="gray"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       Try adjusting your search or selecting a different category.
                     </Typography>
                   </div>
@@ -290,8 +314,8 @@ export default function MenuPage() {
           </div>
         </div>
 
-       {/* FIXED CART BAR */}
-       {cart.length > 0 && (
+        {/* FIXED CART BAR */}
+        {cart.length > 0 && (
           <motion.div
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
@@ -301,19 +325,31 @@ export default function MenuPage() {
           >
             <Card
               className="w-full rounded-none border-t border-gray-200 bg-white shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)]"
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
             >
               <div className="container mx-auto px-4">
-                <CardBody className="p-3 md:p-4">
+                <CardBody
+                  className="p-3 md:p-4"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   <div className="flex justify-between items-center gap-4">
                     <div className="flex items-center gap-3">
                       <div className="bg-blue-500 text-white rounded-md h-8 w-8 flex items-center justify-center text-sm font-bold">
                         {totalItemsInCart}
                       </div>
                       <div>
-                        <Typography color="blue-gray" className="font-bold">
+                        <Typography
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           ₹{cartTotal.toFixed(2)}
                         </Typography>
-                        <Typography variant="small" color="gray">
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           {totalItemsInCart} item{totalItemsInCart > 1 ? 's' : ''} in cart
                         </Typography>
                       </div>
@@ -322,6 +358,7 @@ export default function MenuPage() {
                       color="blue"
                       onClick={() => router.push(`/cart`)}
                       className="flex-shrink-0 flex items-center gap-2"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                     >
                       <span>View Cart</span>
                       <FaShoppingCart />

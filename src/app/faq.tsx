@@ -31,12 +31,28 @@ export function Faq() {
     <section id="faq" className="py-8 px-8 lg:py-20">
       <div className="container mx-auto">
         <div className="text-center">
-          <Typography variant="h1" color="blue-gray" className="mb-4">
+          {/* ✅ Added props to fix build error */}
+          <Typography
+            variant="h1"
+            color="blue-gray"
+            className="mb-4"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+          >
             Frequently asked questions
           </Typography>
+          {/* ✅ Added props to fix build error */}
           <Typography
             variant="lead"
             className="mx-auto mb-24 lg:w-3/5 !text-gray-500"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             Welcome to Tastoria Cafe FAQ section. We&apos;re here to
             address your questions and help you make the most of your cafe experience.
@@ -52,17 +68,35 @@ export function Faq() {
               animate={inViews[key] ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: key * 0.15, type: "spring", stiffness: 80 }}
             >
+              {/* ✅ Added props to fix build error */}
               <Accordion
                 open={open === key + 1}
                 onClick={() => handleOpen(key + 1)}
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               >
-                <AccordionHeader className="text-left text-gray-900">
+                <AccordionHeader
+                  className="text-left text-gray-900"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
                   {title}
                 </AccordionHeader>
                 <AccordionBody>
                   <Typography
                     color="blue-gray"
                     className="font-normal text-gray-500"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
                   >
                     {desc}
                   </Typography>

@@ -26,20 +26,42 @@ export function OurStats() {
   return (
     <section className="container mx-auto grid gap-10 px-8 py-44 lg:grid-cols-1 lg:gap-20 xl:grid-cols-2 xl:place-items-center">
       <div>
-        <Typography variant="h6" color="orange" className="mb-6 font-medium">
+        {/* ✅ Added props to fix build error */}
+        <Typography
+          variant="h6"
+          color="orange"
+          className="mb-6 font-medium"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           Our Numbers
         </Typography>
+        {/* ✅ Added props to fix build error */}
         <Typography
           className="text-5xl font-bold leading-tight lg:w-3/4"
           color="blue-gray"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
         >
           Cafe Highlights
         </Typography>
+        {/* ✅ Added props to fix build error */}
         <Typography
           variant="lead"
           className="mt-3 w-full !text-gray-500 lg:w-9/12"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
         >
-          Join thousands of satisfied customers who have made Tastoria Cafe their 
+          Join thousands of satisfied customers who have made Tastoria Cafe their
           favorite destination for quality coffee, delicious food, and memorable moments.
         </Typography>
       </div>

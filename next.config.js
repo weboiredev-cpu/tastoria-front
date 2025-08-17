@@ -8,9 +8,7 @@ const nextConfig = {
       'res.cloudinary.com'
     ],
   },
-  experimental: {
-    appDir: true
-  }
+  transpilePackages: ['framer-motion'],
 };
 
 module.exports = nextConfig;

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import {
   Card,
-  CardHeader,
   CardBody,
   Typography,
   Button,
@@ -116,7 +115,7 @@ export default function MenuManagement() {
         return;
       }
 
-     const formDataToSend = new FormData();
+      const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("price", price.toString());
@@ -219,7 +218,7 @@ export default function MenuManagement() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paused: !currentStatus }),
       });
-  
+
       const data = await response.json();
       if (data.success) {
         toast.success(`Item ${!currentStatus ? "paused" : "resumed"} successfully`);
@@ -232,7 +231,7 @@ export default function MenuManagement() {
       toast.error("Something went wrong");
     }
   };
-  
+
   const openEditDialog = (item: MenuItem) => {
     setSelectedItem(item);
     setFormData({
@@ -259,20 +258,20 @@ export default function MenuManagement() {
     return nameMatch && categoryMatch;
   });
 
-  const materialProps = {
-    placeholder: "",
-    onResize: () => { },
-    onResizeCapture: () => { },
-    onPointerEnterCapture: () => { },
-    onPointerLeaveCapture: () => { },
-  };
-
   return (
-    
     <div className="p-6 bg-gradient-to-br from-blue-50 to-white min-h-screen">
       {/* --- MODIFIED HEADER SECTION --- */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-10 gap-6">
-        <Typography variant="h3" color="blue-gray" className="font-bold tracking-tight drop-shadow-md" >
+        <Typography
+          variant="h3"
+          color="blue-gray"
+          className="font-bold tracking-tight drop-shadow-md"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           🍽️ Menu Management
         </Typography>
 
@@ -280,6 +279,7 @@ export default function MenuManagement() {
           {/* Card for filters */}
           <div className="flex flex-col md:flex-row items-center gap-10 p-3 rounded-xl shadow-md bg-white border border-blue-100">
             <div className="w-full md:w-64">
+              {/* ✅ Added props to fix build error */}
               <Input
                 label="Search by name"
                 icon={<FiSearch />}
@@ -287,7 +287,10 @@ export default function MenuManagement() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-white/80"
                 crossOrigin={undefined}
-              
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               />
             </div>
             <div className="w-full md:w-64">
@@ -296,7 +299,11 @@ export default function MenuManagement() {
                 value={filterCategory}
                 onChange={(value) => setFilterCategory(value || "")}
                 className="bg-white/80"
-               
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               >
                 <Option value="">All Categories</Option>
                 {categories.map((cat) => (
@@ -312,7 +319,11 @@ export default function MenuManagement() {
           <Button
             className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 shadow-lg px-6 py-3 rounded-xl text-white font-semibold text-base transition-all duration-200 h-full"
             onClick={() => setShowAddDialog(true)}
-           
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             <FiPlus className="h-5 w-5" /> Add New Item
           </Button>
@@ -320,12 +331,16 @@ export default function MenuManagement() {
       </div>
       {/* --- END OF MODIFIED SECTION --- */}
 
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredItems.map((item) => (
           <Card
             key={item._id}
             className="overflow-hidden rounded-2xl shadow-xl bg-white/90 hover:scale-[1.025] hover:shadow-2xl transition-all duration-200 border border-blue-100"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             <div className="relative group h-52">
               <Image
@@ -338,25 +353,62 @@ export default function MenuManagement() {
                 {item.category.replace(/_/g, " ")}
               </div>
             </div>
-            <CardBody className="p-5" >
+            <CardBody
+              className="p-5"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <Typography variant="h5" color="blue-gray" className="font-bold text-lg">
+                  <Typography
+                    variant="h5"
+                    color="blue-gray"
+                    className="font-bold text-lg"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
+                  >
                     {item.name}
                   </Typography>
                 </div>
-                <Typography variant="h6" color="blue-gray" className="font-bold text-xl text-green-600" >
+                <Typography
+                  variant="h6"
+                  color="blue-gray"
+                  className="font-bold text-xl text-green-600"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
                   ₹{item.price}
                 </Typography>
               </div>
-              <Typography color="gray" className="mb-4 text-sm min-h-[48px]" >
+              <Typography
+                color="gray"
+                className="mb-4 text-sm min-h-[48px]"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
                 {item.description}
               </Typography>
               <Typography
                 variant="small"
                 color={item.paused ? "red" : "green"}
                 className="mb-2 font-medium"
-                
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               >
                 Status: {item.paused ? "Paused" : "Active"}
               </Typography>
@@ -366,7 +418,11 @@ export default function MenuManagement() {
                 color={item.paused ? "green" : "orange"}
                 className="rounded-md mb-2"
                 onClick={() => handleTogglePause(item._id, item.paused ?? false)}
-               
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               >
                 {item.paused ? "Resume" : "Pause"}
               </Button>
@@ -377,7 +433,11 @@ export default function MenuManagement() {
                   color="blue-gray"
                   className="hover:bg-blue-50 focus:bg-blue-100 rounded-full"
                   onClick={() => openEditDialog(item)}
-                
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
                 >
                   <FiEdit2 className="h-5 w-5" />
                 </IconButton>
@@ -386,7 +446,11 @@ export default function MenuManagement() {
                   color="red"
                   className="hover:bg-red-50 focus:bg-red-100 rounded-full"
                   onClick={() => handleDeleteItem(item._id)}
-                
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
                 >
                   <FiTrash2 className="h-5 w-5" />
                 </IconButton>
@@ -402,12 +466,31 @@ export default function MenuManagement() {
         handler={() => (showAddDialog ? setShowAddDialog(false) : setShowEditDialog(false))}
         size="md"
         className="rounded-2xl shadow-2xl bg-white/95"
-     
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
       >
-        <DialogHeader className="text-2xl font-bold text-blue-700" >
+        <DialogHeader
+          className="text-2xl font-bold text-blue-700"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           {showAddDialog ? "Add New Menu Item" : "Edit Menu Item"}
         </DialogHeader>
-        <DialogBody divider className="overflow-y-auto max-h-[600px] bg-gradient-to-br from-blue-50 to-white" >
+        <DialogBody
+          divider
+          className="overflow-y-auto max-h-[600px] bg-gradient-to-br from-blue-50 to-white"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           <div className="space-y-5">
             <Input
               label="Name"
@@ -415,7 +498,10 @@ export default function MenuManagement() {
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="bg-white/80 rounded-lg"
               crossOrigin={undefined}
-              
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
             />
             <Input
               label="Description"
@@ -423,7 +509,10 @@ export default function MenuManagement() {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="bg-white/80 rounded-lg"
               crossOrigin={undefined}
-         
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
             />
             <Input
               label="Price"
@@ -432,14 +521,21 @@ export default function MenuManagement() {
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               className="bg-white/80 rounded-lg"
               crossOrigin={undefined}
-             
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
             />
             <Select
               label="Category"
               value={formData.category}
               onChange={(value) => setFormData({ ...formData, category: value || "" })}
               className="bg-white/80 rounded-lg"
-          
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
             >
               {categories.map((category) => (
                 <Option key={category} value={category} className="capitalize">
@@ -477,6 +573,7 @@ export default function MenuManagement() {
                     fill
                     className="object-cover rounded-xl border border-blue-200"
                   />
+
                   <button
                     onClick={() => {
                       setSelectedImage(null);
@@ -494,7 +591,14 @@ export default function MenuManagement() {
             </div>
           </div>
         </DialogBody>
-        <DialogFooter className="flex gap-4" >
+        <DialogFooter
+          className="flex gap-4"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           <Button
             variant="text"
             color="red"
@@ -508,7 +612,11 @@ export default function MenuManagement() {
               setImagePreview("");
             }}
             className="mr-1 px-6 py-2 rounded-lg text-base hover:bg-red-50 hover:text-red-700 transition-all duration-200"
-           
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             Cancel
           </Button>
@@ -516,7 +624,11 @@ export default function MenuManagement() {
             color={showAddDialog ? "green" : "blue"}
             className="px-8 py-2 rounded-lg text-base font-semibold shadow-md bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white transition-all duration-200"
             onClick={showAddDialog ? handleAddItem : handleEditItem}
-          
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             {showAddDialog ? "Add Item" : "Update Item"}
           </Button>

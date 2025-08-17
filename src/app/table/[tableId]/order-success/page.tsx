@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography, Button, Card, CardBody, Chip } from "@material-tailwind/react";
+import { Typography, Button, Card, CardBody } from "@material-tailwind/react";
 import { useParams, useRouter } from "next/navigation";
 import { FiCheckCircle, FiPhone, FiUser, FiClock, FiMapPin } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
@@ -55,9 +55,24 @@ export default function OrderSuccess() {
           animate="visible"
           variants={containerVariants}
         >
-          <Card className="border border-blue-50 shadow-lg overflow-hidden">
-            <CardBody className="p-8">
-              <motion.div 
+          {/* ✅ Added props to fix build error */}
+          <Card
+            className="border border-blue-50 shadow-lg overflow-hidden"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+          >
+            <CardBody
+              className="p-8"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
+              <motion.div
                 className="text-center"
                 variants={itemVariants}
               >
@@ -66,7 +81,7 @@ export default function OrderSuccess() {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ 
+                      transition={{
                         type: "spring",
                         stiffness: 200,
                         delay: 0.2
@@ -76,15 +91,24 @@ export default function OrderSuccess() {
                     </motion.div>
                   </div>
                 </div>
-                <Typography variant="h3" color="blue-gray" className="mb-2 font-bold">
+                <Typography
+                  variant="h3"
+                  color="blue-gray"
+                  className="mb-2 font-bold"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   Order Placed Successfully!
                 </Typography>
-                <Typography color="gray" className="mb-8">
+                <Typography
+                  color="gray"
+                  className="mb-8"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   Your order has been received and will be prepared shortly
                 </Typography>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className="space-y-6"
                 variants={itemVariants}
               >
@@ -94,10 +118,20 @@ export default function OrderSuccess() {
                       <FiMapPin className="h-5 w-5 text-blue-500" />
                     </div>
                     <div>
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
                         Table Number
                       </Typography>
-                      <Typography variant="h6" color="blue-gray" className="font-bold">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="font-bold"
+                        placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                      >
                         Table {tableId}
                       </Typography>
                     </div>
@@ -110,10 +144,20 @@ export default function OrderSuccess() {
                           <FiUser className="h-5 w-5 text-blue-500" />
                         </div>
                         <div>
-                          <Typography variant="small" color="blue-gray" className="font-normal">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             Customer Name
                           </Typography>
-                          <Typography variant="h6" color="blue-gray" className="font-bold">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-bold"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             {orderDetails.customerName}
                           </Typography>
                         </div>
@@ -124,10 +168,20 @@ export default function OrderSuccess() {
                           <FiPhone className="h-5 w-5 text-blue-500" />
                         </div>
                         <div>
-                          <Typography variant="small" color="blue-gray" className="font-normal">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             Phone Number
                           </Typography>
-                          <Typography variant="h6" color="blue-gray" className="font-bold">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-bold"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             {orderDetails.phoneNumber}
                           </Typography>
                         </div>
@@ -138,10 +192,20 @@ export default function OrderSuccess() {
                           <FiClock className="h-5 w-5 text-blue-500" />
                         </div>
                         <div>
-                          <Typography variant="small" color="blue-gray" className="font-normal">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             Order Time
                           </Typography>
-                          <Typography variant="h6" color="blue-gray" className="font-bold">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-bold"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             {new Date(orderDetails.orderTime).toLocaleString()}
                           </Typography>
                         </div>
@@ -151,7 +215,10 @@ export default function OrderSuccess() {
                 </div>
 
                 <div className="bg-amber-50 p-6 rounded-xl border border-amber-200">
-                  <Typography className="text-amber-900 font-medium text-center">
+                  <Typography
+                    className="text-amber-900 font-medium text-center"
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                  >
                     Please proceed to the counter to make your payment
                   </Typography>
                 </div>
@@ -162,6 +229,7 @@ export default function OrderSuccess() {
                     color="blue"
                     className="flex items-center gap-2"
                     onClick={() => router.push(`/table/${tableId}`)}
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   >
                     <span>Order More Items</span>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,4 +244,4 @@ export default function OrderSuccess() {
       </div>
     </div>
   );
-} 
+}

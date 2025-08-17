@@ -1,28 +1,16 @@
 "use client";
 
-import { IconButton, Button, Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { motion } from "framer-motion";
 import Image from 'next/image';
+
 interface HeroProps {
   tableId?: string;
   onViewMenu?: () => void;
 }
-
-// Material Tailwind component props
-const materialProps = {
-  placeholder: "",
-  onResize: () => { },
-  onResizeCapture: () => { },
-  onPointerEnterCapture: () => { },
-  onPointerLeaveCapture: () => { },
-  onAnimationStart: () => { },
-  onDragStart: () => { },
-  onDragEnd: () => { },
-  onDrag: () => { },
-};
 
 function Hero({ tableId, onViewMenu }: HeroProps) {
   const { data: session } = useSession();
@@ -62,9 +50,9 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
         <Image
           src="/image/newCafe.jpg"
           alt="Tastoria Cafe"
-          fill // makes image cover parent (like absolute inset-0)
+          fill
           style={{ objectFit: 'cover' }}
-          priority={false} // false means lazy load
+          priority={false}
         />
       </motion.div>
 
@@ -82,19 +70,19 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            {/*<Typography variant="h3" color="white" className="mb-2" >
-              Open Daily 7AM - 10PM @ Parbhani
-            </Typography>*/}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <Typography variant="h1" color="white" className="lg:max-w-3xl">
+            {/* ✅ Added props to fix build error */}
+            <Typography
+              variant="h1"
+              color="white"
+              className="lg:max-w-3xl"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               Tastoria Cafe: Where Every Sip Tells a Story
             </Typography>
           </motion.div>
@@ -105,11 +93,29 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
           >
-            <Typography variant="lead" color="white" >
+            {/* ✅ Added props to fix build error */}
+            <Typography
+              variant="lead"
+              color="white"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality in our cozy Tastoria Cafe.
             </Typography>
             {tableId && (
-              <Typography variant="lead" color="white" className="mt-4" >
+              <Typography
+                variant="lead"
+                color="white"
+                className="mt-4"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
                 <span className="font-bold">Table {tableId}</span>
               </Typography>
             )}
@@ -125,11 +131,16 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
+              {/* ✅ Added props to fix build error */}
               <Button
                 variant="gradient"
                 color="white"
                 onClick={handleMenuClick}
-                
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               >
                 View Menu
               </Button>

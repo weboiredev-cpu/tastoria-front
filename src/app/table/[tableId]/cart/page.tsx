@@ -1,7 +1,5 @@
 "use client";
 
-// External imports remain the same...
-
 import {
   Typography,
   Button,
@@ -13,21 +11,16 @@ import {
   DialogBody,
   DialogFooter,
   Input,
-  Chip,
 } from "@material-tailwind/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiMinus, FiPlus, FiTrash2, FiArrowLeft, FiPhone, FiUser, FiShoppingBag } from 'react-icons/fi';
+import { FiMinus, FiPlus, FiTrash2, FiArrowLeft, FiPhone, FiShoppingBag } from 'react-icons/fi';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from "next-auth/react";
-import { motion, AnimatePresence } from 'framer-motion';
-
-
+import { motion } from 'framer-motion';
 
 const VALID_TABLES = Array.from({ length: 30 }, (_, i) => String(i + 1));
 
-
-// Cart Storage Utilities - Keep in sync with table menu page
 const STORAGE_KEY_PREFIX = 'table_';
 const MAX_CART_ITEMS = 50;
 
@@ -44,10 +37,8 @@ const cartStorage = {
         toast.error(`Cart cannot exceed ${MAX_CART_ITEMS} items`);
         return false;
       }
-
       const storageKey = `${STORAGE_KEY_PREFIX}${tableId}_cart`;
       const cartString = JSON.stringify(cart);
-
       try {
         localStorage.setItem(storageKey, cartString);
         return true;
@@ -66,7 +57,6 @@ const cartStorage = {
       return false;
     }
   },
-
   load: (tableId: string): CartItem[] => {
     try {
       const storageKey = `${STORAGE_KEY_PREFIX}${tableId}_cart`;
@@ -77,7 +67,6 @@ const cartStorage = {
       return [];
     }
   },
-
   cleanupOldCarts: () => {
     try {
       Object.keys(localStorage).forEach(key => {
@@ -115,25 +104,12 @@ export default function TableCart() {
   const tableId = params.tableId as string;
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
-  const { data: session , update } = useSession();
+  const { data: session, update } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [showPhoneDialog, setShowPhoneDialog] = useState(false);
-const [phoneInput, setPhoneInput] = useState("");
-const [phoneError, setPhoneError] = useState("");
-const [savingPhone, setSavingPhone] = useState(false);
-
-  // Material Tailwind component props
-  const materialProps = {
-    placeholder: "",
-    onResize: undefined,
-    onResizeCapture: undefined,
-    onPointerEnterCapture: undefined,
-    onPointerLeaveCapture: undefined,
-    onAnimationStart: undefined,
-    onDragStart: undefined,
-    onDragEnd: undefined,
-    onDrag: undefined
-  };
+  const [phoneInput, setPhoneInput] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [savingPhone, setSavingPhone] = useState(false);
 
   useEffect(() => {
     if (!VALID_TABLES.includes(tableId)) {
@@ -147,7 +123,7 @@ const [savingPhone, setSavingPhone] = useState(false);
     if (session?.user && !session.user.phone) {
       setShowPhoneDialog(true);
     }
-  }, [tableId, router]);
+  }, [tableId, router, session]);
 
   const calculateTotal = (cartItems: CartItem[]) => {
     const sum = cartItems.reduce((total, item) =>
@@ -177,11 +153,10 @@ const [savingPhone, setSavingPhone] = useState(false);
   };
 
   const handlePlaceOrder = async () => {
-
     if (!session?.user?.phone || !/^\d{10}$/.test(session.user.phone)) {
       toast.error("Please enter a valid 10-digit phone number before placing the order");
-      setShowPhoneDialog(true); // Open the phone dialog
-      return; // Stop order placement
+      setShowPhoneDialog(true);
+      return;
     }
     if (cart.length === 0) {
       toast.error('Cart is empty');
@@ -241,6 +216,7 @@ const [savingPhone, setSavingPhone] = useState(false);
               variant="text"
               className="flex items-center gap-2"
               onClick={() => router.push(`/table/${tableId}`)}
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
             >
               <FiArrowLeft className="h-4 w-4" />
               <span>Back to Menu</span>
@@ -249,22 +225,37 @@ const [savingPhone, setSavingPhone] = useState(false);
               <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold">{tableId}</span>
               </div>
-              <Typography variant="h4" color="blue-gray" className="font-bold">
+              <Typography
+                variant="h4"
+                color="blue-gray"
+                className="font-bold"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
                 Table {tableId}
               </Typography>
               {session?.user?.name && (
-                <Typography variant="small" color="gray" className="italic">
+                <Typography
+                  variant="small"
+                  color="gray"
+                  className="italic"
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   {session.user.name}
                 </Typography>
               )}
             </div>
           </div>
 
-
           {/* Cart Items */}
           {cart.length > 0 ? (
-            <Card className="overflow-hidden shadow-lg" >
-              <CardBody className="p-0" >
+            <Card
+              className="overflow-hidden shadow-lg"
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+            >
+              <CardBody
+                className="p-0"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
                 <div className="divide-y divide-gray-200">
                   {cart.map((item, index) => (
                     <motion.div
@@ -273,7 +264,12 @@ const [savingPhone, setSavingPhone] = useState(false);
                       className="p-4 flex items-center justify-between gap-4"
                     >
                       <div className="flex-1">
-                        <Typography variant="h6" color="blue-gray" className="font-medium" >
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="font-medium"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           {item.name}
                         </Typography>
                         <div className="flex items-center gap-3">
@@ -286,7 +282,12 @@ const [savingPhone, setSavingPhone] = useState(false);
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <Typography variant="h6" color="blue-gray" className="font-bold" >
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                        >
                           ₹{item.price * item.quantity}
                         </Typography>
                         <div className="flex items-center gap-2">
@@ -295,11 +296,15 @@ const [savingPhone, setSavingPhone] = useState(false);
                             color="blue-gray"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity - 1)}
-
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                           >
                             <FiMinus className="h-4 w-4" />
                           </IconButton>
-                          <Typography variant="h6" className="w-8 text-center" >
+                          <Typography
+                            variant="h6"
+                            className="w-8 text-center"
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                          >
                             {item.quantity}
                           </Typography>
                           <IconButton
@@ -307,7 +312,7 @@ const [savingPhone, setSavingPhone] = useState(false);
                             color="blue-gray"
                             size="sm"
                             onClick={() => updateQuantity(index, item.quantity + 1)}
-
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                           >
                             <FiPlus className="h-4 w-4" />
                           </IconButton>
@@ -316,7 +321,7 @@ const [savingPhone, setSavingPhone] = useState(false);
                             color="red"
                             size="sm"
                             onClick={() => removeItem(index)}
-
+                            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                           >
                             <FiTrash2 className="h-4 w-4" />
                           </IconButton>
@@ -335,17 +340,26 @@ const [savingPhone, setSavingPhone] = useState(false);
               <div className="flex justify-center mb-4">
                 <FiShoppingBag className="h-16 w-16 text-blue-gray-300" />
               </div>
-              <Typography variant="h5" color="blue-gray" className="mb-2">
+              <Typography
+                variant="h5"
+                color="blue-gray"
+                className="mb-2"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
                 Your cart is empty
               </Typography>
-              <Typography color="gray" className="mb-6" >
+              <Typography
+                color="gray"
+                className="mb-6"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
                 Add some delicious items from the menu
               </Typography>
               <Button
                 color="blue"
                 onClick={() => router.push(`/table/${tableId}`)}
                 className="mt-4"
-
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
               >
                 Browse Menu
               </Button>
@@ -358,13 +372,27 @@ const [savingPhone, setSavingPhone] = useState(false);
               variants={itemVariants}
               className="mt-8"
             >
-              <Card className="bg-blue-50 border border-blue-100" >
-                <CardBody >
+              <Card
+                className="bg-blue-50 border border-blue-100"
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
+                <CardBody
+                  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                >
                   <div className="flex justify-between items-center mb-4">
-                    <Typography variant="h6" color="blue-gray" >
+                    <Typography
+                      variant="h6"
+                      color="blue-gray"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       Order Summary
                     </Typography>
-                    <Typography variant="h4" color="blue-gray" className="font-bold" >
+                    <Typography
+                      variant="h4"
+                      color="blue-gray"
+                      className="font-bold"
+                      placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+                    >
                       ₹{total}
                     </Typography>
                   </div>
@@ -374,7 +402,7 @@ const [savingPhone, setSavingPhone] = useState(false);
                     className="w-full"
                     onClick={handlePlaceOrder}
                     disabled={isLoading}
-
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
@@ -388,62 +416,71 @@ const [savingPhone, setSavingPhone] = useState(false);
                 </CardBody>
               </Card>
             </motion.div>
-          )
-        }
-          <Dialog open={showPhoneDialog} handler={() => setShowPhoneDialog(false)}>
-  <DialogHeader>
-    <FiPhone className="mr-2" /> Enter Your Phone Number
-  </DialogHeader>
-  <DialogBody>
-    <Input
-      {...materialProps}
-      label="Phone Number"
-      value={phoneInput}
-      onChange={(e) => setPhoneInput(e.target.value)}
-      error={!!phoneError}
-    />
-    {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
-  </DialogBody>
-  <DialogFooter>
-    <Button
-      color="blue"
-      onClick={async () => {
-        if (!/^\d{10}$/.test(phoneInput)) {
-          setPhoneError("Enter a valid 10-digit number");
-          return;
-        }
-        setSavingPhone(true);
-        try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/users/phone`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: session?.user?.email, phone: phoneInput }),
-          });
-          const data = await res.json();
-          if (data.success) {
-            toast.success("Phone number saved!");
-            setShowPhoneDialog(false);
-            setPhoneError("");
-            await update({ phone: phoneInput });
-          } else {
-            toast.error(data.message || "Failed to save number");
-          }
-        } catch (err) {
-          toast.error("Server error, try again later");
-        } finally {
-          setSavingPhone(false);
-        }
-      }}
-      disabled={savingPhone}
-    >
-      {savingPhone ? "Saving..." : "Save"}
-    </Button>
-  </DialogFooter>
-</Dialog>
-
+          )}
+          <Dialog
+            open={showPhoneDialog}
+            handler={() => setShowPhoneDialog(false)}
+            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+          >
+            <DialogHeader
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+            >
+              <FiPhone className="mr-2" /> Enter Your Phone Number
+            </DialogHeader>
+            <DialogBody
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+            >
+              <Input
+                label="Phone Number"
+                value={phoneInput}
+                onChange={(e) => setPhoneInput(e.target.value)}
+                error={!!phoneError}
+                crossOrigin={undefined}
+                onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              />
+              {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+            </DialogBody>
+            <DialogFooter
+              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+            >
+              <Button
+                color="blue"
+                onClick={async () => {
+                  if (!/^\d{10}$/.test(phoneInput)) {
+                    setPhoneError("Enter a valid 10-digit number");
+                    return;
+                  }
+                  setSavingPhone(true);
+                  try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/users/phone`, {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email: session?.user?.email, phone: phoneInput }),
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                      toast.success("Phone number saved!");
+                      setShowPhoneDialog(false);
+                      setPhoneError("");
+                      await update({ phone: phoneInput });
+                    } else {
+                      toast.error(data.message || "Failed to save number");
+                    }
+                  } catch (err) {
+                    toast.error("Server error, try again later");
+                  } finally {
+                    setSavingPhone(false);
+                  }
+                }}
+                disabled={savingPhone}
+                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+              >
+                {savingPhone ? "Saving..." : "Save"}
+              </Button>
+            </DialogFooter>
+          </Dialog>
         </motion.div>
       </div>
     </div>
-    
   );
 }

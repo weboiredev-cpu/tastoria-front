@@ -6,7 +6,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Avatar,
 } from "@material-tailwind/react";
 import { motion } from "framer-motion";
 
@@ -30,10 +29,16 @@ export function EventContentCard({
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
+      {/* ✅ Added props to fix build error */}
       <Card
         color="transparent"
         shadow={false}
         className="lg:!flex-row mb-10 lg:items-end"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
       >
         <motion.div
           whileHover={{ scale: 1.02 }}
@@ -43,6 +48,11 @@ export function EventContentCard({
             floated={false}
             shadow={false}
             className="h-[32rem] max-w-[28rem] shrink-0 overflow-hidden"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
           >
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -58,14 +68,30 @@ export function EventContentCard({
             </motion.div>
           </CardHeader>
         </motion.div>
-        <CardBody className="col-span-full lg:col-span-3">
+        <CardBody
+          className="col-span-full lg:col-span-3"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        >
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Typography variant="h6" color="blue-gray" className="mb-4">
+            <Typography
+              variant="h6"
+              color="blue-gray"
+              className="mb-4"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               {panel}
             </Typography>
           </motion.div>
@@ -75,7 +101,16 @@ export function EventContentCard({
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Typography variant="h2" color="blue-gray" className="mb-4 font-medium">
+            <Typography
+              variant="h2"
+              color="blue-gray"
+              className="mb-4 font-medium"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               {title}
             </Typography>
           </motion.div>
@@ -85,7 +120,14 @@ export function EventContentCard({
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <Typography className="mb-12 md:w-8/12 font-medium !text-gray-500">
+            <Typography
+              className="mb-12 md:w-8/12 font-medium !text-gray-500"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
               {des}
             </Typography>
           </motion.div>

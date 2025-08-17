@@ -24,16 +24,18 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  // 1. Remove the symbol from the beginning of the string
   const marqueeText = "Welcome to Tastoria Cafe — Serving Happiness in Every Cup ☕ — Freshly Brewed Coffee • Delicious Pastries • Cozy Vibes";
 
   return (
-
     <footer className="relative w-full bg-white px-4 pt-8 sm:px-8">
       <div className="container mx-auto">
         {/* Top Section */}
         <div className="flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left gap-6">
-          <Typography variant="h5" className="font-bold text-gray-800">
+          <Typography
+            variant="h5"
+            className="font-bold text-gray-800"
+            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+          >
             Tastoria Cafe
           </Typography>
 
@@ -66,7 +68,6 @@ export function Footer() {
 
         {/* Advanced Fade & Blur Scroll Marquee */}
         <div className="marquee-container mt-8 text-sm font-medium text-gray-700">
-           {/* 2. Add the diamond symbol as a separator between the text spans */}
           <div className="marquee-content">
             <span>{marqueeText}</span>
             <span className="mx-3">⚡︎</span>
@@ -83,10 +84,18 @@ export function Footer() {
 
         {/* Bottom Section */}
         <div className="mt-8 py-4 border-t border-gray-200 text-center space-y-1">
-          <Typography variant="small" className="font-normal text-gray-600">
+          <Typography
+            variant="small"
+            className="font-normal text-gray-600"
+            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+          >
             &copy; {currentYear} Tastoria Cafe. All rights reserved.
           </Typography>
-          <Typography variant="small" className="font-normal text-gray-600">
+          <Typography
+            variant="small"
+            className="font-normal text-gray-600"
+            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
+          >
             Developed by Tastoria
             <br></br>
             <br></br>

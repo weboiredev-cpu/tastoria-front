@@ -104,7 +104,16 @@ export default function OrderConfirmation() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4"></div>
-          <Typography variant="h6" color="gray">
+          {/* ✅ Added props to fix build error */}
+          <Typography
+            variant="h6"
+            color="gray"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+          >
             Processing your order...
           </Typography>
         </div>
@@ -117,14 +126,14 @@ export default function OrderConfirmation() {
       <Navbar />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 py-32">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             <div className="text-center mb-12">
-              <motion.div 
+              <motion.div
                 className="flex justify-center mb-6"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -139,69 +148,229 @@ export default function OrderConfirmation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Typography variant="h2" color="blue-gray" className="mb-4 font-bold">
+                <Typography
+                  variant="h2"
+                  color="blue-gray"
+                  className="mb-4 font-bold"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
                   Order Confirmed!
                 </Typography>
-                <Typography variant="lead" className="text-gray-600">
+                <Typography
+                  variant="lead"
+                  className="text-gray-600"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                >
                   Thank you for ordering at Paradise Cafe
                 </Typography>
               </motion.div>
             </div>
 
-            <Card className="mb-8 shadow-lg border border-blue-50">
-              <CardBody>
+            <Card
+              className="mb-8 shadow-lg border border-blue-50"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+            >
+              <CardBody
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+              >
                 <div className="space-y-6">
                   {/* Order Details */}
-                  <List>
-                    <ListItem className="p-0">
-                      <ListItemPrefix>
+                  <List
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
+                  >
+                    <ListItem
+                      className="p-0"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                      onResize={undefined}
+                      onResizeCapture={undefined}
+                    >
+                      <ListItemPrefix
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
                         <FiShoppingBag className="h-5 w-5 text-blue-500" />
                       </ListItemPrefix>
                       <div className="flex flex-col">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           Order ID
                         </Typography>
-                        <Typography variant="h6" color="blue-gray" className="font-bold">
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           {orderDetails.orderId}
                         </Typography>
                       </div>
                     </ListItem>
-                    <ListItem className="p-0">
-                      <ListItemPrefix>
+                    <ListItem
+                      className="p-0"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                      onResize={undefined}
+                      onResizeCapture={undefined}
+                    >
+                      <ListItemPrefix
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
                         <FiClock className="h-5 w-5 text-blue-500" />
                       </ListItemPrefix>
                       <div className="flex flex-col">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           Order Time
                         </Typography>
-                        <Typography variant="h6" color="blue-gray" className="font-bold">
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           {orderDetails.orderTime}
                         </Typography>
                       </div>
                     </ListItem>
-                    <ListItem className="p-0">
-                      <ListItemPrefix>
+                    <ListItem
+                      className="p-0"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                      onResize={undefined}
+                      onResizeCapture={undefined}
+                    >
+                      <ListItemPrefix
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
                         <FiMail className="h-5 w-5 text-blue-500" />
                       </ListItemPrefix>
                       <div className="flex flex-col">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           Email
                         </Typography>
-                        <Typography variant="h6" color="blue-gray" className="font-bold">
+                        <Typography
+                          variant="h6"
+                          color="blue-gray"
+                          className="font-bold"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           {orderDetails.userEmail}
                         </Typography>
                       </div>
                     </ListItem>
                     {orderDetails.phoneNumber && (
-                      <ListItem className="p-0">
-                        <ListItemPrefix>
+                      <ListItem
+                        className="p-0"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                      >
+                        <ListItemPrefix
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                        >
                           <FiPhone className="h-5 w-5 text-blue-500" />
                         </ListItemPrefix>
                         <div className="flex flex-col">
-                          <Typography variant="small" color="blue-gray" className="font-normal">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
+                          >
                             Phone
                           </Typography>
-                          <Typography variant="h6" color="blue-gray" className="font-bold">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-bold"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onResize={undefined}
+                            onResizeCapture={undefined}
+                          >
                             {orderDetails.phoneNumber}
                           </Typography>
                         </div>
@@ -211,7 +380,16 @@ export default function OrderConfirmation() {
 
                   {/* Order Summary */}
                   <div className="bg-blue-50 p-6 rounded-xl space-y-4">
-                    <Typography variant="h6" color="blue-gray" className="font-bold">
+                    <Typography
+                      variant="h6"
+                      color="blue-gray"
+                      className="font-bold"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                      onResize={undefined}
+                      onResizeCapture={undefined}
+                    >
                       Order Summary
                     </Typography>
                     <div className="space-y-2">
@@ -240,17 +418,29 @@ export default function OrderConfirmation() {
                   </div>
 
                   <div className="bg-amber-50 p-6 rounded-xl border border-amber-200">
-                    <Typography className="text-amber-900 font-medium text-center">
+                    <Typography
+                      className="text-amber-900 font-medium text-center"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                      onResize={undefined}
+                      onResizeCapture={undefined}
+                    >
                       Please proceed to the counter to make your payment
                     </Typography>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Link href="/order-history" className="block">
-                      <Button 
-                        color="blue" 
+                      <Button
+                        color="blue"
                         className="w-full flex items-center justify-center gap-2"
                         size="lg"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
                       >
                         <span>View Order History</span>
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,11 +449,16 @@ export default function OrderConfirmation() {
                       </Button>
                     </Link>
                     <Link href="/menu-page" className="block">
-                      <Button 
-                        color="blue" 
-                        variant="outlined" 
+                      <Button
+                        color="blue"
+                        variant="outlined"
                         className="w-full flex items-center justify-center gap-2"
                         size="lg"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
                       >
                         <span>Order More</span>
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,4 +475,4 @@ export default function OrderConfirmation() {
       </div>
     </>
   );
-} 
+}
