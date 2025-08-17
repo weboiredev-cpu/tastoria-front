@@ -63,7 +63,7 @@ const handler = NextAuth({
         if (!credentials?.email || !credentials?.password) return null;
 
         try {
-          const res = await fetch(`${API_URL}/api/admin/login`, {
+          const res = await fetch(`${API_URL}api/admin/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -102,7 +102,7 @@ const handler = NextAuth({
       if (account?.provider === "google" && user?.email) {
         // 1. Save or update user on backend
         try {
-          await fetch(`${API_URL}/api/users/auth`, {
+          await fetch(`${API_URL}api/users/auth`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -117,7 +117,7 @@ const handler = NextAuth({
 
         // 2. Check for phone number
         try {
-          const res = await fetch(`${API_URL}/api/users/check`, {
+          const res = await fetch(`${API_URL}api/users/check`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: user.email }),
@@ -144,8 +144,8 @@ const handler = NextAuth({
         try {
           const endpoint =
             token.role === "admin"
-              ? `${API_URL}/api/admin/check`
-              : `${API_URL}/api/users/check`;
+              ? `${API_URL}api/admin/check`
+              : `${API_URL}api/users/check`;
 
           const res = await fetch(endpoint, {
             method: "POST",
