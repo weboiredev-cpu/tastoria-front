@@ -77,7 +77,7 @@ export default function OrderConfirmation() {
       localStorage.setItem('cart', '[]');
 
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/phone`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
