@@ -20,16 +20,16 @@ declare module "next-auth" {
       image?: string | null;
       role?: string;
       token?: string;
-      phone?: string | null; 
+      phone?: string | null;
     }
   }
-  
+
   interface User {
     id?: string;
     email?: string;
     role?: string;
     token?: string;
-    phone?: string | null; 
+    phone?: string | null;
   }
 }
 
@@ -63,11 +63,11 @@ const handler = NextAuth({
           console.log("[Admin Login] Missing credentials:", credentials);
           return null;
         }
-      
+
         try {
           console.log("[Admin Login] Sending request to backend:", credentials.email);
-      
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/admin/login`, {
+
+          const res = await fetch("http://localhost:5000/api/admin/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -75,17 +75,17 @@ const handler = NextAuth({
               password: credentials.password,
             }),
           });
-      
+
           console.log("[Admin Login] Response status:", res.status);
-      
+
           const data = await res.json().catch(() => null);
           console.log("[Admin Login] Response data:", data);
-      
+
           if (!res.ok || !data?.token) {
             console.log("[Admin Login] Invalid response or missing token");
             return null;
           }
-      
+
           let decoded: JwtPayload;
           try {
             decoded = jwtDecode<JwtPayload>(data.token);
@@ -94,7 +94,7 @@ const handler = NextAuth({
             console.error("[Admin Login] JWT decode failed:", decodeError);
             return null;
           }
-      
+
           // Map fields from JWT payload
           const adminUser = {
             id: decoded.id,
@@ -102,10 +102,10 @@ const handler = NextAuth({
             role: "admin",
             token: data.token,
           };
-      
+
           console.log("[Admin Login] Returning admin user object:", adminUser);
           return adminUser;
-      
+
         } catch (err) {
           console.error("[Admin Login] Exception during authorize:", err);
           return null;
@@ -123,21 +123,57 @@ const handler = NextAuth({
 
   callbacks: {
 
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        // Check if user already has a phone number in the database
+        try {
+
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/auth`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: user.email,
+              name: user.name,
+              image: user.image,
+            }),
+          });
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/check`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email }),
+          });
+
+          if (res.ok) {
+            const dbUser = await res.json();
+
+            // If user doesn't have a phone number, redirect to profile setup
+            if (!dbUser?.phone) {
+              return "/profile-setup";
+            }
+          }
+        } catch (error) {
+          console.error("[SignIn] Error checking user phone:", error);
+          // If there's an error checking, allow the sign in but they'll be prompted later
+        }
+      }
+      return true;
+    },
+
     async jwt({ token, user, account, trigger, session }) {
       if (user) {
         // Google login
         if (account?.provider === "google") {
           token.role = "user";
           token.id = user.id;
-    
+
           // Fetch from DB on login
           try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}api/users/check`, {
-              method: "GET",
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/check`, {
+              method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: user.email }),
             });
-    
+
             if (res.ok) {
               const dbUser = await res.json();
               token.phone = dbUser?.phone || null;
@@ -151,24 +187,40 @@ const handler = NextAuth({
           token.role = (user as any).role || "user";
           token.id = (user as any).id;
           token.token = (user as any).token;
+
+          try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/admin/check`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: user.email }),
+            });
+
+            if (res.ok) {
+              const dbUser = await res.json();
+              token.phone = dbUser?.phone || null;
+            }
+          } catch (error) {
+            console.error("[JWT] Error fetching admin phone:", error);
+            token.phone = null;
+          }
         }
       }
-    
+
       // ✅ Allow `session.update()` to set new phone
       if (trigger === "update" && session?.phone !== undefined) {
         token.phone = session.phone;
       }
-    
+
       return token;
     },
-    
+
 
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         session.user.token = token.token as string;
-        session.user.phone = token.phone || null; 
+        session.user.phone = token.phone || null;
       }
       return session;
     },
