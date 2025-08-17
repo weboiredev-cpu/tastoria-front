@@ -136,7 +136,7 @@ export default function TableMenu() {
     const fetchMenu = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/all`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/menu/all`);
         const data = await res.json();
 
         if (data.success) {
