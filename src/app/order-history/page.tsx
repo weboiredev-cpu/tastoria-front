@@ -41,11 +41,11 @@ export default function OrderHistory() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.replace('/api/auth/signin');
+      router.replace('api/auth/signin');
     }
 
     if (session?.user?.email) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/user/${session.user.email}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/user/${session.user.email}`)
         .then(res => res.json())
         .then(data => {
           if (data.success) {
