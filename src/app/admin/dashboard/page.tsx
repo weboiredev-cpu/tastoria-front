@@ -150,9 +150,9 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const [statsRes, recentOrdersRes, popularItemsRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/stats`),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/recent`),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/most-sold`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}api/admin/stats`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/recent`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/most-sold`),
       ]);
 
       if (!statsRes.ok || !recentOrdersRes.ok || !popularItemsRes.ok) throw new Error('Failed to fetch data');
