@@ -67,7 +67,7 @@ const handler = NextAuth({
         try {
           console.log("[Admin Login] Sending request to backend:", credentials.email);
       
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/login`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/admin/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -132,7 +132,7 @@ const handler = NextAuth({
     
           // Fetch from DB on login
           try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/check`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}api/users/check`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: user.email }),
