@@ -61,7 +61,7 @@ export default function AdminSignIn() {
         email: formData.email,
         password: formData.password,
         redirect: false,
-        callbackUrl: '/admin/dashboard'
+        callbackUrl: 'admin/dashboard'
       });
       if (result?.error) {
         toast.error('Invalid email or password. Please try again.');
