@@ -201,7 +201,11 @@ export default function OrdersManagement() {
                   <IconTable className="h-5 w-5 text-gray-500" />
                   <select value={selectedTable} onChange={(e) => setSelectedTable(e.target.value)} className="min-w-[150px] p-2 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="all">All Tables</option>
-                    {[1, 2, 3, 4, 5, 6, 7].map(table => (<option key={table} value={String(table)}>Table {table}</option>))}
+                     {[...Array(30)].map((_, i) => (
+                      <option key={i + 1} value={String(i + 1)}>
+                        Table {i + 1}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
