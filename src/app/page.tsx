@@ -54,7 +54,7 @@ export default function Portfolio() {
       <section
         className="relative min-h-screen flex flex-col justify-center items-center bg-black"
         style={{
-          backgroundImage: "url('/image/newCafe.jpg')", // Change to your hero image path
+          backgroundImage: "url('/image/newCafe.webp')", // Change to your hero image path
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         
