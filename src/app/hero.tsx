@@ -48,7 +48,7 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
         className="absolute inset-0"
       >
         <Image
-          src="/image/newCafe.jpg"
+          src="/image/newCafe.webp"
           alt="Tastoria Cafe"
           fill
           style={{ objectFit: 'cover' }}
