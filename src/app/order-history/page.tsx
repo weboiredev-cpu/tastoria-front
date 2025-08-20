@@ -42,7 +42,7 @@ export default function OrderHistory() {
  useEffect(() => {
   const fetchOrders = async (email: string) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/user/${session.user.email}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/user/${email}`);
       const data = await res.json();
       if (data.success) {
         setOrders(data.orders);
@@ -60,7 +60,7 @@ export default function OrderHistory() {
   }
 
   // If session exists, preload orders immediately
-  if (session?.user?.email) {
+  if (status === "authenticated" && session?.user?.email){
     setLoadingOrders(true);
     fetchOrders(session.user.email);
   }
