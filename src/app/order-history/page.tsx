@@ -9,7 +9,7 @@ import {
   Chip,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import { FiClock, FiShoppingBag, FiPhone, FiCheckCircle, FiPackage, FiTrendingUp } from 'react-icons/fi';
 import Loading from "@/components/Loading"
@@ -41,7 +41,7 @@ export default function OrderHistory() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.replace('api/auth/signin');
+      signIn("google", { callbackUrl: "/order-history" });
     }
 
     if (session?.user?.email) {
