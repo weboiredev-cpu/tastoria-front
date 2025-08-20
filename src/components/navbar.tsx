@@ -104,13 +104,13 @@ export function Navbar() {
   }, [open, userMenuOpen]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20 text-gray-900"
-          : "bg-white text-black"
-      }`}
-    >
+   <nav
+  className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
+    isScrolled
+      ? "bg-white/20 backdrop-blur-xl border border-white/20 shadow-lg text-gray-900"
+      : "bg-white/15 backdrop-blur-md border border-white/10 text-black"
+  }`}
+>
       <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
           <Link
