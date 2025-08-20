@@ -32,33 +32,41 @@ export default function OrderHistory() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
   const { data: session, status } = useSession();
   const router = useRouter();
-
+  const [loadingOrders, setLoadingOrders] = useState(true);
   const totalOrdersCount = orders.length;
   const completedOrdersCount = orders.filter(o => o.status === "completed").length;
   const totalSpent = orders
     .filter(o => o.status === "completed")
     .reduce((sum, o) => sum + o.total, 0);
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      signIn("google", { callbackUrl: "/order-history" });
+ useEffect(() => {
+  const fetchOrders = async (email: string) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/orders/user/${session.user.email}`);
+      const data = await res.json();
+      if (data.success) {
+        setOrders(data.orders);
+      }
+    } catch (err) {
+      console.error("Failed to fetch order history", err);
+    } finally {
+      setLoadingOrders(false);
     }
+  };
 
-    if (session?.user?.email) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/user/${session.user.email}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setOrders(data.orders);
-          }
-        })
-        .catch(err => {
-          console.error("Failed to fetch order history", err);
-        });
-    }
-  }, [session, status, router]);
+  // Trigger Google login if not logged in
+  if (status === "unauthenticated") {
+    signIn("google", { callbackUrl: "/order-history" });
+  }
 
-  if (status === "loading") {
+  // If session exists, preload orders immediately
+  if (session?.user?.email) {
+    setLoadingOrders(true);
+    fetchOrders(session.user.email);
+  }
+}, [session, status]);
+
+if (status === "loading" || loadingOrders) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="flex flex-col items-center space-y-4">
