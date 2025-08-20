@@ -60,7 +60,7 @@ export default function Portfolio() {
         
         }}
       >
-        <div className="absolute inset-0 bg-black/60" /> {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-black/5" /> {/* Overlay for readability */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-32">
           {/*<h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 text-center">
             Open Daily 7AM - 10PM @ Parbhani
