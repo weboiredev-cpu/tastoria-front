@@ -1,7 +1,7 @@
 "use client";
 
-import { Typography } from "@material-tailwind/react";
 import Link from "next/link";
+import Image from "next/image";
 
 const LINKS = [
   { title: "Menu", href: "/menu-page" },
@@ -24,128 +24,68 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  const marqueeText = "Welcome to Tastoria Cafe — Serving Happiness in Every Cup ☕ — Freshly Brewed Coffee • Delicious Pastries • Cozy Vibes";
 
   return (
-    <footer className="relative w-full bg-white px-4 pt-8 sm:px-8">
-      <div className="container mx-auto">
-        {/* Top Section */}
-        <div className="flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left gap-6">
-          <Typography
-            variant="h5"
-            className="font-bold text-gray-800"
-            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
-          >
-            Tastoria Cafe
-          </Typography>
+    <footer className="relative w-full bg-gradient-to-br from-blue-50 via-white to-amber-50 px-6 sm:px-12 py-12 border-t border-gray-200">
+      <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Logo Section */}
+        <div className="flex flex-col items-start">
+          <Image
+            src="/image/Tastoria.jpg"
+            alt="Tastoria Cafe Logo"
+            width={160}
+            height={60}
+            className="mb-4 object-contain"
+          />
+          <p className="text-gray-600 text-sm">
+            Bringing flavors to life, one bite at a time.
+          </p>
+        </div>
 
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {LINKS.map((link) => (
-              <Link
-                key={link.title}
-                href={link.href}
-                className="py-1 font-normal text-gray-700 transition-colors hover:text-blue-500"
-              >
-                {link.title}
-              </Link>
+        {/* Navigation Links */}
+        <div>
+          <h6 className="mb-4 text-gray-800 font-semibold">Quick Links</h6>
+          <ul className="space-y-2">
+            {LINKS.map((link, idx) => (
+              <li key={idx}>
+                <Link
+                  href={link.href}
+                  className="text-gray-600 hover:text-amber-600 transition"
+                >
+                  {link.title}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
+        </div>
 
-          <div className="flex justify-center gap-4">
-            {SOCIAL_LINKS.map((link) => (
+        {/* Social Links */}
+        <div>
+          <h6 className="mb-4 text-gray-800 font-semibold">Follow Us</h6>
+          <div className="flex space-x-4">
+            {SOCIAL_LINKS.map((social, idx) => (
               <a
-                key={link.title}
-                href={link.href}
+                key={idx}
+                href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-1 text-gray-700 transition-transform hover:scale-110 hover:text-blue-500"
+                className="text-gray-600 hover:text-amber-600 text-xl"
               >
-                <i className={`${link.icon} text-xl`}></i>
+                <i className={social.icon}></i>
               </a>
             ))}
           </div>
         </div>
-
-        {/* Advanced Fade & Blur Scroll Marquee */}
-        <div className="marquee-container mt-8 text-sm font-medium text-gray-700">
-          <div className="marquee-content">
-            <span>{marqueeText}</span>
-            <span className="mx-3">⚡︎</span>
-            <span>{marqueeText}</span>
-            <span className="mx-3">⚡︎</span>
-          </div>
-          <div className="marquee-content" aria-hidden="true">
-            <span>{marqueeText}</span>
-            <span className="mx-3">⚡︎</span>
-            <span>{marqueeText}</span>
-            <span className="mx-3">⚡︎</span>
-          </div>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="mt-8 py-4 border-t border-gray-200 text-center space-y-1">
-          <Typography
-            variant="small"
-            className="font-normal text-gray-600"
-            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
-          >
-            &copy; {currentYear} Tastoria Cafe. All rights reserved.
-          </Typography>
-          <Typography
-            variant="small"
-            className="font-normal text-gray-600"
-            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
-          >
-            Developed by Tastoria
-            <br></br>
-            <br></br>
-          </Typography>
-        </div>
       </div>
 
-      {/* Animation Styles */}
-      <style jsx>{`
-        .marquee-container {
-          --gap: 1.5rem;
-          --scroll-start: 0;
-          --scroll-end: calc(-100% - var(--gap));
-          
-          display: flex;
-          user-select: none;
-          gap: var(--gap);
-          position: relative;
-          overflow: hidden;
-          padding-top: 1rem;
-          padding-bottom: 1rem;
-          border-top: 1px solid #e5e7eb;
-          border-bottom: 1px solid #e5e7eb;
-
-          mask-image: linear-gradient(
-            to right,
-            hsl(0 0% 0% / 0),
-            hsl(0 0% 0% / 1) 15%,
-            hsl(0 0% 0% / 1) 85%,
-            hsl(0 0% 0% / 0)
-          );
-        }
-
-        @keyframes scroll {
-          to {
-            transform: translateX(var(--scroll-end));
-          }
-        }
-
-        .marquee-content {
-          flex-shrink: 0;
-          display: flex;
-          justify-content: space-around;
-          align-items: center; /* Vertically center the content */
-          gap: var(--gap);
-          min-width: 100%;
-          animation: scroll 35s linear infinite;
-        }
-
-      `}</style>
+      {/* Bottom Bar */}
+      <div className="mt-12 border-t border-gray-200 pt-6 text-center">
+        <p className="text-gray-500 text-sm">
+          © {currentYear} Tastoria Cafe. All rights reserved.
+          <br />
+          Developed by Tastoria
+        </p>
+      </div>
     </footer>
   );
 }
