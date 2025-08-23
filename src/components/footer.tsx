@@ -5,8 +5,8 @@ import Image from "next/image";
 
 const LINKS = [
   { title: "Menu", href: "/menu-page" },
-  { title: "About Us", href: "/#about" },
-  { title: "Contact", href: "/#contact" },
+  { title: "About Us", href: "#about" },
+  { title: "Contact", href: "#contact" },
 ];
 
 const SOCIAL_LINKS = [
