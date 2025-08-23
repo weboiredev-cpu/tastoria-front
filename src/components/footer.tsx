@@ -67,7 +67,7 @@ export function Footer() {
         </div>
 
         {/* Advanced Fade & Blur Scroll Marquee */}
-        <div className="marquee-container mt-8 text-sm font-medium text-gray-700">
+        <div className="marquee-container mt-8 text-lg sm:text-xl font-semibold text-gray-800">
           <div className="marquee-content">
             <span>{marqueeText}</span>
             <span className="mx-3">⚡︎</span>
