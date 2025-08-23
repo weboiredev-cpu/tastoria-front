@@ -51,15 +51,29 @@ function NavItem({ children, href, mobile, onClick }: NavItemProps) {
   );
 }
 
-const NAV_MENU = [
-  { name: "About", icon: UserCircleIcon, href: "/#about" },
-  { name: "Menu", icon: ShoppingBagIcon, href: "/menu-page" },
-  { name: "Contact", icon: PhoneIcon, href: "/#contact" },
-  { name: "Order History", icon: ClockIcon, href: "/order-history" },
-];
+
 
 export function Navbar() {
   const pathname = usePathname();
+   const tableMatch = pathname.match(/^\/table\/(\d+)/); 
+const isTablePage = !!tableMatch;                     
+const tableId = tableMatch ? tableMatch[1] : null;   
+
+const NAV_MENU = [
+  { name: "About", icon: UserCircleIcon, href: "#about" },
+  {
+    name: "Menu",
+    icon: ShoppingBagIcon,
+    href: "/menu-page",
+  },
+  { name: "Contact", icon: PhoneIcon, href: "#contact" },
+  {
+    name: "Order History",
+    icon: ClockIcon,
+    href: "/order-history",
+  },
+];
+ 
   if (pathname?.startsWith("/admin")) return null;
 
   const [open, setOpen] = useState(false);
