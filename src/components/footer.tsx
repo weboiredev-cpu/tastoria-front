@@ -35,6 +35,7 @@ export function Footer() {
             alt="Tastoria Cafe Logo"
             width={160}
             height={60}
+            priority
             className="mb-4 object-contain"
           />
           <p className="text-gray-600 text-sm">
@@ -69,7 +70,7 @@ export function Footer() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-amber-600 text-xl"
+                className="flex items-center justify-center w-8 h-8 text-gray-600 hover:text-amber-600 transition"
               >
                 <i className={social.icon}></i>
               </a>
