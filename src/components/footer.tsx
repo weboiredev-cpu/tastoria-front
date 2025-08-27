@@ -31,7 +31,7 @@ export function Footer() {
         {/* Logo Section */}
         <div className="flex flex-col items-start">
           <Image
-            src="/image/Tastoria.jpg"
+            src="/image/Tastoria.webp"
             alt="Tastoria Cafe Logo"
             width={160}
             height={60}
