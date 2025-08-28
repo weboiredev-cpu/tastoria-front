@@ -26,8 +26,8 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative w-full min-h-[200px] bg-gradient-to-br from-blue-50 via-white to-amber-50 px-6 sm:px-12 py-12 border-t border-gray-200">
-      <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="relative w-full min-h-[220px] bg-gradient-to-br from-blue-50 via-white to-amber-50 px-6 sm:px-12 py-12 border-t border-gray-200">
+      <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[120px]">
         {/* Logo Section */}
         <div className="flex flex-col items-start">
           <div className="relative w-[160px] h-[60px]">
