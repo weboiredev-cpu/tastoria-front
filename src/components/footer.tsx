@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-
+import { Facebook, Instagram} from "lucide-react";
 const LINKS = [
   { title: "Menu", href: "/menu-page" },
   { title: "About Us", href: "#about" },
@@ -12,12 +12,12 @@ const LINKS = [
 const SOCIAL_LINKS = [
   {
     title: "Facebook",
-    icon: "fab fa-facebook",
+     icon: Facebook, 
     href: "https://facebook.com/paradisecafe",
   },
   {
     title: "Instagram",
-    icon: "fab fa-instagram",
+    icon: Instagram,
     href: "https://www.instagram.com/tastoria_cafe_mh22",
   },
 ];
@@ -72,7 +72,8 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-8 h-8 text-gray-600 hover:text-amber-600 transition"
               >
-                <i className={social.icon}></i>
+                <social.icon className="w-5 h-5" />
+
               </a>
             ))}
           </div>
