@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram} from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 const LINKS = [
   { title: "Menu", href: "/menu-page" },
   { title: "About Us", href: "#about" },
@@ -12,7 +12,7 @@ const LINKS = [
 const SOCIAL_LINKS = [
   {
     title: "Facebook",
-     icon: Facebook, 
+    icon: Facebook,
     href: "https://facebook.com/paradisecafe",
   },
   {
@@ -30,16 +30,17 @@ export function Footer() {
       <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo Section */}
         <div className="flex flex-col items-start">
-          <div className="relative w-[160px] aspect-[160/60]">
-          <Image
-            src="/image/Tastoria.webp"
-            alt="Tastoria Cafe Logo"
-            fill
-            priority
-            className="mb-4 object-contain"
-          />
+          <div className="relative w-[160px] h-[60px]">
+            <Image
+              src="/image/Tastoria.webp"
+              alt="Tastoria Cafe Logo"
+              width={160}
+              height={60}
+              className="mb-4 object-contain"
+            />
           </div>
-          <p className="text-gray-600 text-sm">
+
+          <p className="text-gray-600 text-sm leading-relaxed">
             Bringing flavors to life, one bite at a time.
           </p>
         </div>
@@ -74,7 +75,7 @@ export function Footer() {
                 aria-label={social.title}
                 className="flex items-center justify-center w-8 h-8 text-gray-600 hover:text-amber-600 transition"
               >
-                <social.icon className="w-5 h-5" />
+                <social.icon className="w-5 h-5 shrink-0"/>
 
               </a>
             ))}
