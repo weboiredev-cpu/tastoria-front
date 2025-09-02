@@ -41,9 +41,7 @@ export function Footer() {
             />
           </div>
 
-          <p className="text-gray-600 text-sm leading-relaxed">
-            Bringing flavors to life, one bite at a time.
-          </p>
+        
         </div>
 
         {/* Navigation Links */}
