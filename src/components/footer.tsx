@@ -1,4 +1,3 @@
-"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -37,6 +36,7 @@ export function Footer() {
               alt="Tastoria Cafe Logo"
               width={160}
               height={60}
+               sizes="160px"
               className="mb-4 object-contain"
             />
           </div>
