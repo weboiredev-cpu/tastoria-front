@@ -25,7 +25,21 @@ export default function TableLayout({ children }: { children: React.ReactNode })
   }, [tableId]);
 
   if (!mounted) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+        <div className="container mx-auto px-4 py-24">
+          <div className="animate-pulse space-y-6">
+            <div className="h-24 bg-gray-200 rounded" />
+            <div className="h-64 bg-gray-200 rounded" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="h-48 bg-gray-200 rounded" />
+              <div className="h-48 bg-gray-200 rounded" />
+              <div className="h-48 bg-gray-200 rounded" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (showMenu) {

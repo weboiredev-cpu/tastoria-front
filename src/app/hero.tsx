@@ -52,7 +52,8 @@ function Hero({ tableId, onViewMenu }: HeroProps) {
           alt="Tastoria Cafe"
           fill
           style={{ objectFit: 'cover' }}
-          priority={false}
+          priority
+          sizes="100vw"
         />
       </motion.div>
 
