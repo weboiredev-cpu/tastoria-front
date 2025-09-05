@@ -13,9 +13,9 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Tastoria Cafe - Where Every Sip Tells a Story",
+  title: "Tastoria- Where Every Sip Tells a Story",
   description:
-    "Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality at Tastoria Cafe. Your cozy destination for quality coffee and memorable moments.",
+    "Experience the perfect blend of artisanal coffee, gourmet cuisine, and warm hospitality at Tastoria. Your cozy destination for quality coffee and memorable moments.",
   icons: {
     icon: "/Favicon.ico",
   },
