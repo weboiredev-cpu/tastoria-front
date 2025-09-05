@@ -33,7 +33,7 @@ const socialMediaData = [
     icon: FaInstagram,
     title: "Instagram",
     value: "@yourusername",
-    link: "https://instagram.com/yourusername",
+    link: "https://www.instagram.com/tastoria_2025?igsh=dTAxOGNiYjc5a2ts",
   },
   {
     icon: FaFacebook,
