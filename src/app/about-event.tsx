@@ -34,7 +34,7 @@ export function AboutEvent() {
         onResize={undefined}
         onResizeCapture={undefined}
       >
-        About Tastoria Cafe
+        About Tastoria
       </Typography>
 
       {/* ✅ Added ALL required props to fix build error */}
@@ -61,7 +61,7 @@ export function AboutEvent() {
         onResize={undefined}
         onResizeCapture={undefined}
       >
-        Welcome to Tastoria Cafe, where every visit is a journey into culinary excellence!
+        Welcome to Tastoria, where every visit is a journey into culinary excellence!
         Whether you're a coffee connoisseur, a food enthusiast, or simply looking for a
         cozy spot to unwind, our cafe offers the perfect blend of comfort, quality, and community.
       </Typography>
