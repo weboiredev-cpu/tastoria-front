@@ -34,7 +34,7 @@ export function About() {
         onResize={undefined}
         onResizeCapture={undefined}
       >
-        About Tastoria Cafe
+        About Tastoria
       </Typography>
 
       {/* ✅ Added props to fix build error */}
@@ -60,7 +60,7 @@ export function About() {
         onResize={undefined}
         onResizeCapture={undefined}
       >
-        Welcome to Tastoria Cafe, where every visit is a journey into culinary excellence!
+        Welcome to Tastoria, where every visit is a journey into culinary excellence!
         Founded in 2023, our mission is to provide a cozy spot for our community to enjoy artisanal coffee, gourmet cuisine, and warm hospitality.
       </Typography>
 
