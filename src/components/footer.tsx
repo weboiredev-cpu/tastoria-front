@@ -18,7 +18,7 @@ const SOCIAL_LINKS = [
   {
     title: "Instagram",
     icon: Instagram,
-    href: "https://www.instagram.com/tastoria_cafe_mh22",
+    href: "https://www.instagram.com/tastoria_2025?igsh=dTAxOGNiYjc5a2ts",
   },
 ];
 
