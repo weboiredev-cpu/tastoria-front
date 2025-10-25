@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { tableId: string } }
+  { params }: { params: Promise<{ tableId: string }> }
 ) {
   try {
-    const { tableId } = params;
+    const { tableId } = await params;
     console.log('[API] Getting order for table:', tableId);
 
     const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') || 'http://localhost:5000';
