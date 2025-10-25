@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography, Button, Card, CardBody } from "@material-tailwind/react";
+import { Typography, Button, Card, CardBody, Dialog, DialogHeader, DialogBody, DialogFooter } from "@material-tailwind/react";
 import { useParams, useRouter } from "next/navigation";
 import { FiCheckCircle, FiPhone, FiUser, FiClock, FiMapPin } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ interface OrderDetails {
   phoneNumber: string;
   tableId: string;
   orderTime: string;
+  status: string;
 }
 
 const containerVariants = {
@@ -36,18 +37,195 @@ export default function OrderSuccess() {
   const router = useRouter();
   const tableId = params.tableId;
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [previousStatus, setPreviousStatus] = useState<string | null>(null);
 
+  // Monitor state changes
   useEffect(() => {
-    // In a real application, you would fetch this from your backend
-    // For now, we'll simulate it with localStorage
-    const lastOrder = localStorage.getItem(`table_${tableId}_last_order`);
-    if (lastOrder) {
-      setOrderDetails(JSON.parse(lastOrder));
+    console.log('[OrderSuccess] State changed:', {
+      hasOrderDetails: !!orderDetails,
+      showPopup,
+      orderData: orderDetails
+    });
+  }, [orderDetails, showPopup]);
+
+useEffect(() => {
+  const getOrderDetails = async () => {
+    console.log('[OrderSuccess] Starting order fetch for table:', tableId);
+
+    try {
+      console.log('[OrderSuccess] Fetching from API:', `/api/orders/table/${tableId}`);
+      const res = await fetch(`/api/orders/table/${tableId}`);
+      console.log('[OrderSuccess] API Response status:', res.status);
+      
+      const data = await res.json();
+      console.log('[OrderSuccess] API Response data:', data);
+
+      if (data.success && data.order) {
+        console.log('[OrderSuccess] Valid order received, setting details:', data.order);
+        console.log('[OrderSuccess] Current previousStatus:', previousStatus);
+        console.log('[OrderSuccess] New order status:', data.order.status);
+        
+        // Check if status changed from pending to confirmed
+        if (previousStatus === 'pending' && data.order.status === 'confirmed') {
+          console.log('[OrderSuccess] Status changed from pending to confirmed - showing popup!');
+          setShowPopup(true);
+        }
+        
+        setPreviousStatus(data.order.status);
+        setOrderDetails(data.order);
+        
+        // If order is already confirmed on first load, show popup
+        if (!previousStatus && data.order.status === 'confirmed') {
+          console.log('[OrderSuccess] Order already confirmed on first load - showing popup!');
+          setShowPopup(true);
+        }
+      } else {
+        console.log('[OrderSuccess] Order not found:', data.message);
+      }
+    } catch (error) {
+      console.error('[OrderSuccess] Error fetching order:', error);
     }
-  }, [tableId]);
+  };
+
+  getOrderDetails();
+}, [tableId]);
+
+// Polling effect to check for status changes
+useEffect(() => {
+  if (!orderDetails) return;
+
+  const pollTimer = setInterval(async () => {
+    console.log('[OrderSuccess] Polling for order status changes...');
+    try {
+      const pollRes = await fetch(`/api/orders/table/${tableId}`);
+      const pollData = await pollRes.json();
+      
+      if (pollData.success && pollData.order) {
+        const currentStatus = pollData.order.status;
+        console.log('[OrderSuccess] Poll result - Current:', currentStatus, 'Previous:', previousStatus);
+        
+        // Check if status changed from pending to confirmed
+        if (previousStatus === 'pending' && currentStatus === 'confirmed') {
+          console.log('[OrderSuccess] Status changed from pending to confirmed - showing popup!');
+          setShowPopup(true);
+        }
+        
+        // Update status if it changed
+        if (currentStatus !== previousStatus) {
+          console.log('[OrderSuccess] Status changed from', previousStatus, 'to', currentStatus);
+          setPreviousStatus(currentStatus);
+          setOrderDetails(pollData.order);
+        }
+        
+        // Stop polling if order is completed or cancelled
+        if (currentStatus === 'completed' || currentStatus === 'cancelled') {
+          console.log('[OrderSuccess] Order finished, stopping polling');
+          clearInterval(pollTimer);
+        }
+      }
+    } catch (pollError) {
+      console.error('[OrderSuccess] Poll error:', pollError);
+    }
+  }, 3000); // Poll every 3 seconds
+
+  // Cleanup interval on unmount
+  return () => clearInterval(pollTimer);
+}, [tableId, orderDetails, previousStatus]);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      {/* Debug overlay */}
+      {/*
+      <div className="fixed top-4 right-4 bg-white p-4 rounded shadow-lg z-[9999] text-xs">
+        <div>Table ID: {tableId}</div>
+        <div>Show Popup: {String(showPopup)}</div>
+        <div>Has Order: {String(!!orderDetails)}</div>
+        <div>Current Status: {orderDetails?.status || 'N/A'}</div>
+        <div>Previous Status: {previousStatus || 'N/A'}</div>
+        <button 
+          onClick={() => setShowPopup(true)} 
+          className="mt-2 px-2 py-1 bg-blue-500 text-white rounded"
+        >
+          Force Show Popup
+        </button>
+      </div>
+       */}
+      {/* Confirmation Dialog */}
+      <Dialog 
+        open={showPopup} 
+        handler={() => setShowPopup(false)}
+        className="z-[9999]"
+        placeholder={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        <DialogHeader
+          placeholder={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <Typography 
+            variant="h5" 
+            color="blue-gray"
+            placeholder={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            Order Confirmed!
+          </Typography>
+        </DialogHeader>
+        <DialogBody 
+          divider
+          placeholder={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <div className="flex items-center gap-3">
+            <FiCheckCircle className="h-8 w-8 text-green-500" />
+            <Typography 
+              color="gray"
+              placeholder={undefined}
+              onResize={undefined}
+              onResizeCapture={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Your order is confirmed by the admin
+            </Typography>
+          </div>
+        </DialogBody>
+        <DialogFooter
+          placeholder={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <Button
+            variant="text"
+            color="blue"
+            onClick={() => setShowPopup(false)}
+            placeholder={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            Close
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
       <div className="container mx-auto px-4 py-32">
         <motion.div
           className="max-w-2xl mx-auto"
@@ -77,7 +255,12 @@ export default function OrderSuccess() {
                 variants={itemVariants}
               >
                 <div className="flex justify-center mb-6">
-                  <div className="bg-green-100 p-4 rounded-full">
+                  <div className={`p-4 rounded-full ${
+                    orderDetails?.status === 'confirmed' ? 'bg-green-100' :
+                    orderDetails?.status === 'completed' ? 'bg-blue-100' :
+                    orderDetails?.status === 'cancelled' ? 'bg-red-100' :
+                    'bg-yellow-100'
+                  }`}>
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
@@ -87,7 +270,12 @@ export default function OrderSuccess() {
                         delay: 0.2
                       }}
                     >
-                      <FiCheckCircle className="h-16 w-16 text-green-500" />
+                      <FiCheckCircle className={`h-16 w-16 ${
+                        orderDetails?.status === 'confirmed' ? 'text-green-500' :
+                        orderDetails?.status === 'completed' ? 'text-blue-500' :
+                        orderDetails?.status === 'cancelled' ? 'text-red-500' :
+                        'text-yellow-500'
+                      }`} />
                     </motion.div>
                   </div>
                 </div>
@@ -97,14 +285,20 @@ export default function OrderSuccess() {
                   className="mb-2 font-bold"
                   placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                 >
-                  Order Placed Successfully!
+                  {orderDetails?.status === 'confirmed' ? 'Order Confirmed!' : 
+                   orderDetails?.status === 'completed' ? 'Order Completed!' :
+                   orderDetails?.status === 'cancelled' ? 'Order Cancelled' :
+                   'Order Placed Successfully!'}
                 </Typography>
                 <Typography
                   color="gray"
                   className="mb-8"
                   placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onResize={undefined} onResizeCapture={undefined}
                 >
-                  Your order has been received and will be prepared shortly
+                  {orderDetails?.status === 'confirmed' ? 'Your order has been confirmed and will be prepared shortly' :
+                   orderDetails?.status === 'completed' ? 'Your order has been completed. Thank you for dining with us!' :
+                   orderDetails?.status === 'cancelled' ? 'Your order has been cancelled. Please contact staff if this was a mistake.' :
+                   'Your order has been received and is being processed'}
                 </Typography>
               </motion.div>
 

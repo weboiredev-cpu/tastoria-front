@@ -63,7 +63,7 @@ const handler = NextAuth({
         if (!credentials?.email || !credentials?.password) return null;
 
         try {
-          const res = await fetch(`${API_URL}api/admin/login`, {
+          const res = await fetch(`${API_URL.replace(/\/$/, '')}/api/admin/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -73,7 +73,10 @@ const handler = NextAuth({
           });
 
           const data = await res.json();
-          if (!res.ok || !data?.token) return null;
+          if (!res.ok || !data?.token) {
+            console.error("[Admin Login] Response not ok:", { status: res.status, data });
+            return null;
+          }
 
           const decoded = jwtDecode<JwtPayload>(data.token);
           return {
