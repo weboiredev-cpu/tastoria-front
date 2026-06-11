@@ -39,7 +39,7 @@ const socialMediaData = [
     icon: FaFacebook,
     title: "Facebook",
     value: "Our Facebook Page",
-    link: "https://facebook.com/yourusername",
+    link: "https://www.facebook.com/saneesh.reddy.1",
   },
 ];
 
